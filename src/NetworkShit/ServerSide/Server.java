@@ -7,6 +7,7 @@ import java.net.Socket;
 
 public class Server {
 
+//	Is server running?
 	private static boolean isServerUp = true;
 
 	public static void main(String[] args) {
@@ -28,6 +29,8 @@ public class Server {
 		}
 
 	}
+
+//	Getters and Setters
 
 	public static boolean isIsServerUp() {
 		return isServerUp;

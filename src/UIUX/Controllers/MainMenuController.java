@@ -1,4 +1,4 @@
 package UIUX.Controllers;
 
-public class MainMenuController {
+public class MainMenuController extends ParentController {
 }
