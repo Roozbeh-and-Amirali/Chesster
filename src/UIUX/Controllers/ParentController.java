@@ -1,5 +1,6 @@
 package UIUX.Controllers;
 
+import NetworkShit.ClientSide.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,6 +19,8 @@ public class ParentController {
         }
 
         Scene scene = new Scene( root );
+        Client.pStage.setScene( scene );
+        Client.pStage.show();
 
     }
 
