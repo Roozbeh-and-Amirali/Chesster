@@ -1,7 +1,7 @@
 
 package NetworkShit.ServerSide;
 
-import NetworkShit.SharedStuff.GameState;
+import Enums.GameState;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

@@ -1,4 +1,4 @@
-package NetworkShit.SharedStuff;
+package Enums;
 
 //In ke baazimoon too-e che vazEatie...
 public enum GameState {
