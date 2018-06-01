@@ -94,7 +94,7 @@
       </Label>
       <ImageView fx:id="profilePicture" fitHeight="125.0" fitWidth="129.0" layoutX="1029.0" layoutY="451.0" onMouseClicked="#chooseProfilePicture" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../Assets/FirstPage/unknown-contact.png" />
+            <Image url="@../Assets/FirstPage/unknown-contact.png" />
          </image>
          <cursor>
             <Cursor fx:constant="HAND" />
