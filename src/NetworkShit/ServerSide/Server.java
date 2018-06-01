@@ -1,14 +1,22 @@
 
 package NetworkShit.ServerSide;
 
+import BasicClasses.LoginInformation;
+import Game.Profile;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Server {
 
 //	Is server running?
 	private static boolean isServerUp = true;
+
+	public static List<Profile> profiles = Collections.synchronizedList( new ArrayList<Profile>() );
 
 	public static void main(String[] args) {
 
@@ -28,6 +36,15 @@ public class Server {
 			}
 		}
 
+	}
+
+	public static boolean isLoginInformationValid( LoginInformation loginInformation ) {
+		for ( Profile currentProfile : Server.profiles ) {
+			if (currentProfile.getUserName().equals(loginInformation.getUsername()))
+				if (currentProfile.getPassword().equals(loginInformation.getPassword()))
+					return true;
+		}
+		return false;
 	}
 
 //	Getters and Setters

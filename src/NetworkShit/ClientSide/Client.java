@@ -22,7 +22,7 @@ public class Client extends Application {
 		Client.pStage = primaryStage;
 		Parent root = null;
 		try {
-			root = FXMLLoader.load( getClass().getResource( "/UIUX/FXMLs/MainMenu.fxml" ) );
+			root = FXMLLoader.load( getClass().getResource( "/UIUX/FXMLs/FirstPage.fxml" ) );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
