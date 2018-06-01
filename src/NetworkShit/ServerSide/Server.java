@@ -11,11 +11,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/*
+Server :))
+ */
+
 public class Server {
 
 //	Is server running?
 	private static boolean isServerUp = true;
 
+//	ProfileHaaE ke ta alaan saakhte shodan ro injaa zakhire mikonim!
 	public static List<Profile> profiles = Collections.synchronizedList( new ArrayList<Profile>() );
 
 	public static void main(String[] args) {
@@ -38,6 +43,7 @@ public class Server {
 
 	}
 
+//	Behesh ye chiZ az jens-e LoginInformation pass midim, behemoon mige ke aayaa useri baa in moshakhasaat vojood daare yaa na!
 	public static boolean isLoginInformationValid( LoginInformation loginInformation ) {
 		for ( Profile currentProfile : Server.profiles ) {
 			if (currentProfile.getUserName().equals(loginInformation.getUsername()))

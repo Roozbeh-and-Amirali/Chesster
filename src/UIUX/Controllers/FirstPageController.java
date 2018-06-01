@@ -31,42 +31,52 @@ public class FirstPageController extends ParentController{
 	@FXML
 	TextField signupNameField;
 
+//	VaghT taraf dokme-e login ro mizane, in taabe' sedaa zade mishe
 	public void doLoginStuff() {
-		if ( loginUsernameField.getText().isEmpty() || loginPasswordField.getText().isEmpty() ) {
-			this.showFillRequiredFieldsDialog();
+		if ( loginUsernameField.getText().isEmpty() || loginPasswordField.getText().isEmpty() ) { //Age yeki az fieldHaa-e mored-e niaaz khaali boodan
+			this.showFillRequiredFieldsDialog();	//Be taraf befahmoon ke baayad poreshoon kone!
 			return;
 		}
+//		ChizHaaE ro ke taraf vaared karde, dar ghaaleb-e ye LoginInformation negah midaarim
 		LoginInformation loginInformation = new LoginInformation( loginUsernameField.getText(), loginPasswordField.getText() );
-//		System.out.println( "FIRST PAGE: " + loginInformation );
-		if ( ! Server.isLoginInformationValid( loginInformation ) ){
-			this.showInvalidLoginDialog();
+		if ( ! Server.isLoginInformationValid( loginInformation ) ){	//Age ettelaa'aati ke taraf vaared karde bood ghalat boodan
+			this.showInvalidLoginDialog();	//Be taraf befahmoon ke chi shode!
 			return;
 		}
+//		age be injaa-e taabe reside baashim ya'ni hamechiz ok boode... boro soraagh-e menu!
 		this.loadPage( "MainMenu" );
 	}
 
+//	VaghT taraf dokme-e signup ro mizare, in taabe' sedaa zade mishe
 	public void doSignupStuff() {
-		if ( signupUsernameField.getText().isEmpty() || signupPasswordField.getText().isEmpty() || signupConfirmPasswordField.getText().isEmpty() ) {
-			this.showFillRequiredFieldsDialog();
+//		Age yeki az fieldHaa-e mored-e niaaz khaali boodan
+		if ( signupUsernameField.getText().isEmpty()
+				|| signupPasswordField.getText().isEmpty()
+				|| signupConfirmPasswordField.getText().isEmpty()
+				|| signupNameField.getText().isEmpty() ) {
+			this.showFillRequiredFieldsDialog();	//Be taraf befahmoon ke baayad poreshoon kone!
 			return;
 		}
+//		Age paswoordi ke vaared shode bood, ba comfirmationesh fargh daasht
 		if ( ! signupPasswordField.getText().equals( signupConfirmPasswordField.getText() ) ) {
-			this.showMismatchPasswordsDialog();
+			this.showMismatchPasswordsDialog();	//Be taraf begoo ke paswoordHaash be ham nemikhoran!
 			return;
 		}
+//		Khob, hamechi OK e... profili ke taraf khaaste besaaze ro besaaz va berizesh too-e justCreatedProfile
 		Profile justCreatedProfile = this.makeProfileFromPageContent();
 //		System.out.println( justCreatedProfile );
-		Server.profiles.add( justCreatedProfile );
-		this.showProfileCreatedDialog();
-		this.clearFields();
+		Server.profiles.add( justCreatedProfile );	//ProfileE ke saakhT ro too-e Server add kon!
+		this.showProfileCreatedDialog();	//Begoo ke profile ro saakhT baa movaffaghiat
+		this.clearFields();	//FieldHaa ro paak kon... kaaresh tamoom shode Dge mikhaaymeshoon chikar?
 
-		System.out.println();
+/*		System.out.println();
 		for ( Profile temp : Server.profiles )
 			System.out.println( temp );
-		System.out.println();
+		System.out.println();*/
 
 	}
 
+//	FieldHaa-e marboot be ghesmat-e signup ro paak mikone
 	private void clearFields() {
 		this.signupUsernameField.setText( null );
 		this.signupPasswordField.setText( null );
@@ -76,6 +86,7 @@ public class FirstPageController extends ParentController{
 		this.profilePicture.setImage( temp );
 	}
 
+//	Az chizHaaE ke tooye safhe hastan, ye profile misaaze!
 	private Profile makeProfileFromPageContent() {
 		Profile returnValue = new Profile();
 		returnValue.setUserName( signupUsernameField.getText() );
@@ -84,6 +95,7 @@ public class FirstPageController extends ParentController{
 		return returnValue;
 	}
 
+//	VaghT taraf roo-e profile picturesh click mikone, ye safheE baaz mishe ke komak mikone ye profile picture entekhaab kone!
 	public void chooseProfilePicture() {
 		FileChooser fileChooser = new FileChooser();
 		File file = fileChooser.showOpenDialog( Client.pStage.getScene().getWindow() );
@@ -93,6 +105,7 @@ public class FirstPageController extends ParentController{
 		}
 	}
 
+//	Title va Matn-e badane ro migire, va ye alert baa oon mohtaviaat neshoon mide!
 	public void makeAndShowInformationDialog( String title, String contentText ) {
 		Alert alert = new Alert( Alert.AlertType.INFORMATION );
 		alert.setTitle( title );
@@ -100,6 +113,8 @@ public class FirstPageController extends ParentController{
 		alert.setContentText( contentText );
 		alert.showAndWait();
 	}
+
+//	AlertHaa-e mokhtalef ro injaa misaazim... bad baa komak-e makeAndShowInformationDialog neshooneshoon midim!
 
 	public void showProfileCreatedDialog(){
 		String title = "Success";

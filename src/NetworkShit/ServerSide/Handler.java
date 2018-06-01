@@ -29,14 +29,15 @@ public class Handler implements Runnable {
 		}
 	}
 
-//	Getters and Setters
+    @Override
+    public void run() {
+
+    }
+
+    //	Getters and Setters
 
 	private void setSocket( Socket socket ) {
 		this.socket = socket;
 	}
 
-    @Override
-    public void run() {
-
-    }
 }

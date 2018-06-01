@@ -3,6 +3,11 @@ package Game;
 
 import BasicClasses.Rating;
 
+/*
+Profile Dge... ettelaa'aat-e shakhs ro toosh daarim! ChizHaaE mesl-e
+username o password o inaa...
+ */
+
 public class Profile {
 
     private String userName, password;
