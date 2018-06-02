@@ -8,7 +8,9 @@ LoginInformation mifrestim be Server, ke check konim bebinim
 hamchin useri vojood daare yaa na!
  */
 
-public class LoginInformation {
+import java.io.Serializable;
+
+public class LoginInformation implements Serializable {
 
 //  Username daare va Password!
 	private String username, password;
