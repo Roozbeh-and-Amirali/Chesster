@@ -3,7 +3,9 @@ package UIUX.Controllers;
 import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CheckLoginValidnessCommand;
+import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCommand;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
+import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
 import ClientAndHandlerCommunication.Responses.Response;
 import Game.Profile;
 import NetworkShit.ClientSide.Client;
@@ -74,9 +76,10 @@ public class FirstPageController extends ParentController{
 //		Khob, hamechi OK e... profili ke taraf khaaste besaaze ro besaaz va berizesh too-e justCreatedProfile
 		Profile justCreatedProfile = this.makeProfileFromPageContent();
 //		System.out.println( justCreatedProfile );
-		Server.profiles.add( justCreatedProfile );	//ProfileE ke saakhT ro too-e Server add kon!
-		this.showProfileCreatedDialog();	//Begoo ke profile ro saakhT baa movaffaghiat
-		this.clearFields();	//FieldHaa ro paak kon... kaaresh tamoom shode Dge mikhaaymeshoon chikar?
+//		Server.profiles.add( justCreatedProfile );	//ProfileE ke saakhT ro too-e Server add kon!
+		ProfileCreationResponse response = this.addProfile( justCreatedProfile );
+		this.showProfileCreatedDialog( response );    //Begoo ke profile ro saakhT baa movaffaghiat
+		this.clearFields();    //FieldHaa ro paak kon... kaaresh tamoom shode Dge mikhaaymeshoon chikar?
 
 /*		System.out.println();
 		for ( Profile temp : Server.profiles )
@@ -95,13 +98,27 @@ public class FirstPageController extends ParentController{
 		LoginIsValidResponse response = null;
 		try {
 			response = (LoginIsValidResponse) Client.ois.readObject();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		System.out.println( "Handler Response: " + response );
 		return response.getAnswer();
+	}
+
+	private ProfileCreationResponse addProfile( Profile profile ) {
+		CreateProfileCommand command = new CreateProfileCommand( profile );
+		try {
+			Client.oos.writeObject( command );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		ProfileCreationResponse response = null;
+		try {
+			response = (ProfileCreationResponse) Client.ois.readObject();
+		} catch (IOException|ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return response;
 	}
 
 //	FieldHaa-e marboot be ghesmat-e signup ro paak mikone
@@ -144,9 +161,15 @@ public class FirstPageController extends ParentController{
 
 //	AlertHaa-e mokhtalef ro injaa misaazim... bad baa komak-e makeAndShowInformationDialog neshooneshoon midim!
 
-	public void showProfileCreatedDialog(){
+	public void profileCreationFailedDialog( ProfileCreationResponse response ) {
+		String title = "Failed to create profile";
+		String contentText = response.getMessage();
+		this.makeAndShowInformationDialog( title, contentText );
+	}
+
+	public void showProfileCreatedDialog( ProfileCreationResponse response ){
 		String title = "Success";
-		String contentText = "Profile Created Successfully, now you can login!";
+		String contentText = response.getMessage();
 		this.makeAndShowInformationDialog( title, contentText );
 	}
 

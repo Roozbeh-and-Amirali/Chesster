@@ -10,6 +10,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /*
 Server :))
@@ -21,7 +23,8 @@ public class Server {
 	private static boolean isServerUp = true;
 
 //	ProfileHaaE ke ta alaan saakhte shodan ro injaa zakhire mikonim!
-	public static List<Profile> profiles = Collections.synchronizedList( new ArrayList<Profile>() );
+//	public static List<Profile> profiles = Collections.synchronizedList( new ArrayList<Profile>() );
+	public static Map<String, Profile> profiles = new ConcurrentHashMap<String, Profile>();
 
 	public static void main(String[] args) {
 

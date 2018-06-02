@@ -4,13 +4,16 @@ package NetworkShit.ServerSide;
 import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CheckLoginValidnessCommand;
+import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCommand;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
+import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
 import ClientAndHandlerCommunication.Responses.Response;
 import Enums.GameState;
 import Game.Profile;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Map;
 
 //Client Handler
 public class Handler implements Runnable {
@@ -37,7 +40,6 @@ public class Handler implements Runnable {
     public void run() {
 		while ( true ) {
 			Command clientCommand = this.getCommandFromClient();
-			System.out.println( "Client Command: " + clientCommand );
 			Response response = this.produceResponse( clientCommand );
 			this.sendResponseToClient( response );
 		}
@@ -66,17 +68,46 @@ public class Handler implements Runnable {
 		if ( command instanceof CheckLoginValidnessCommand ){
 			LoginInformation temp = ((CheckLoginValidnessCommand) command).getLoginInformation();
 			boolean answer = this.isLoginValid( temp );
-			return ( new LoginIsValidResponse( answer ) );
+			returnValue = new LoginIsValidResponse( answer );
+//			return ( new LoginIsValidResponse( answer ) );
+		}
+		else if ( command instanceof CreateProfileCommand ) {
+			Profile newProfile = ((CreateProfileCommand) command).getProfile();
+			returnValue = this.addProfile( newProfile );
+//			Server.profiles.add( newProfile );
+/*			System.out.println( "Profiles: " );
+			for ( Profile temp : Server.profiles )
+				System.out.print( temp + " " );*/
 		}
 		return returnValue;
 	}
 
-	private boolean isLoginValid( LoginInformation loginInformation ) {
-		for ( Profile current : Server.profiles )
-			if ( current.getUserName().equalsIgnoreCase( loginInformation.getUsername() ) )
-				if ( current.getPassword().equals( loginInformation.getPassword() ) )
-					return true;
+	private ProfileCreationResponse addProfile( Profile profile ) {
+		ProfileCreationResponse returnValue;
+		if ( this.isLoginValid( new LoginInformation( profile.getUserName(), profile.getPassword() ) ) )
+			returnValue = new ProfileCreationResponse( false, "Username already exists" );
+		else if ( this.profileExists( profile ) )
+			returnValue = new ProfileCreationResponse( false, "Try another username and password" );
+		else {
+			returnValue = new ProfileCreationResponse(true, "User created successfully");
+			Server.profiles.put( profile.getUserName(), profile );
+			for (Map.Entry<String,Profile> iterator : Server.profiles.entrySet() )
+				System.out.print ( iterator.getKey() + " " + iterator.getValue()+ "     " );
+			System.out.println();
+		}
+		return returnValue;
+	}
+
+	private boolean profileExists( Profile profile ) {
+		if ( this.isLoginValid( new LoginInformation( profile.getUserName(), profile.getPassword() ) ) )
+			if ( Server.profiles.get( profile.getUserName() ).getPassword().equals( profile.getPassword() ) )
+				return true;
 		return false;
+
+	}
+
+	private boolean isLoginValid( LoginInformation loginInformation ) {
+		return ( Server.profiles.get( loginInformation.getUsername() ) != null );
 	}
 
     //	Getters and Setters

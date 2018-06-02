@@ -3,12 +3,14 @@ package Game;
 
 import BasicClasses.Rating;
 
+import java.io.Serializable;
+
 /*
 Profile Dge... ettelaa'aat-e shakhs ro toosh daarim! ChizHaaE mesl-e
 username o password o inaa...
  */
 
-public class Profile {
+public class Profile implements Serializable {
 
     private String userName, password;
     private String name;
