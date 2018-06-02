@@ -35,13 +35,20 @@ public class Server {
 		while ( Server.isIsServerUp() ){
 			Socket currentSocket = null;
 			try {
+				System.out.println( "Waiting for a client..." );
 				currentSocket = serverSocket.accept();
+				System.out.println( "Found a Client!" );
+				Handler temp = new Handler( currentSocket );
+				Thread handlerThread = new Thread( temp );
+				handlerThread.start();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 
 	}
+
+/*
 
 //	Behesh ye chiZ az jens-e LoginInformation pass midim, behemoon mige ke aayaa useri baa in moshakhasaat vojood daare yaa na!
 	public static boolean isLoginInformationValid( LoginInformation loginInformation ) {
@@ -52,6 +59,7 @@ public class Server {
 		}
 		return false;
 	}
+*/
 
 //	Getters and Setters
 
