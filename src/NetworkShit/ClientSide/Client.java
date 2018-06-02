@@ -6,9 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 public class Client extends Application {
@@ -23,7 +21,7 @@ public class Client extends Application {
 	public static void main(String[] args) {
 		try {
 			Client.socket = new Socket( "localhost", 1958 );
-			System.out.println( "Socket successfully connected");
+
 			Client.ois = new ObjectInputStream( Client.socket.getInputStream() );
 			Client.oos = new ObjectOutputStream( Client.socket.getOutputStream() );
 			System.out.println( "Created ois and oos!" );

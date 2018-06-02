@@ -9,9 +9,7 @@ import ClientAndHandlerCommunication.Responses.Response;
 import Enums.GameState;
 import Game.Profile;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 //Client Handler
@@ -39,6 +37,7 @@ public class Handler implements Runnable {
     public void run() {
 		while ( true ) {
 			Command clientCommand = this.getCommandFromClient();
+			System.out.println( "Client Command: " + clientCommand );
 			Response response = this.produceResponse( clientCommand );
 			this.sendResponseToClient( response );
 		}
