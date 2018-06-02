@@ -5,7 +5,9 @@ package BasicClasses;
 Har Playeri ye rating daare, oonja miaam az in celass estefaade mikonim
  */
 
-public class Rating {
+import java.io.Serializable;
+
+public class Rating implements Serializable {
 
 //	Defaut-e rating-e har kasi in meghdaare...
 	public static long DEFAULT_RATING = 1200;
