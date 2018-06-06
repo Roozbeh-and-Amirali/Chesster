@@ -4,6 +4,9 @@ import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CheckLoginValidnessCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCommand;
+import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
+import ClientAndHandlerCommunication.Commands.FirstPageCommands.SetProfileCommand;
+import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
 import ClientAndHandlerCommunication.Responses.Response;
@@ -26,7 +29,8 @@ import java.util.ResourceBundle;
 
 public class FirstPageController extends ParentController implements Initializable {
 
-	private final static String PROFILE_PICTURE_DEFAULT = "/Assets/FirstPage/default_contact.png";
+	private final static String ASSETS_FOLDER = "/Assets/FirstPage/";
+	private final static String PROFILE_PICTURE_DEFAULT = FirstPageController.ASSETS_FOLDER + "default_contact.png";
 
 	@FXML
 	TextField loginUsernameField;
@@ -57,15 +61,12 @@ public class FirstPageController extends ParentController implements Initializab
 		}
 //		ChizHaaE ro ke taraf vaared karde, dar ghaaleb-e ye LoginInformation negah midaarim
 		LoginInformation loginInformation = new LoginInformation( loginUsernameField.getText(), loginPasswordField.getText() );
-/*		if ( ! Server.isLoginInformationValid( loginInformation ) ){	//Age ettelaa'aati ke taraf vaared karde bood ghalat boodan
+		if ( ! this.isLoginInformationValid( loginInformation ) ){	//Age ettelaa'aati ke taraf vaared karde bood ghalat boodan
 			this.showInvalidLoginDialog();	//Be taraf befahmoon ke chi shode!
 			return;
-		}*/
-		if ( ! this.isLoginInformationValid( loginInformation ) ){
-			this.showInvalidLoginDialog();
-			return;
 		}
-//		age be injaa-e taabe reside baashim ya'ni hamechiz ok boode... boro soraagh-e menu!
+//		age be injaa-e taabe reside baashim ya'ni hamechiz ok boode... LoginInformation ro daashte baash va boro soraagh-e menu!
+        this.setClientProfile( loginInformation.getUsername() );
 		this.loadPage( "MainMenu" );
 	}
 
@@ -92,43 +93,63 @@ public class FirstPageController extends ParentController implements Initializab
 		this.showProfileCreatedDialog( response );    //Begoo ke profile ro saakhT baa movaffaghiat
 		this.clearFields();    //FieldHaa ro paak kon... kaaresh tamoom shode Dge mikhaaymeshoon chikar?
 
-/*		System.out.println();
-		for ( Profile temp : Server.profiles )
-			System.out.println( temp );
-		System.out.println();*/
-
 	}
 
-	private boolean isLoginInformationValid( LoginInformation loginInformation ) {
-		Command loginValidation = new CheckLoginValidnessCommand( loginInformation );
-		try {
-			Client.oos.writeObject( loginValidation );
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		LoginIsValidResponse response = null;
-		try {
-			response = (LoginIsValidResponse) Client.ois.readObject();
-		} catch (IOException|ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		System.out.println( "Handler Response: " + response );
-		return response.getAnswer();
-	}
-
-	private ProfileCreationResponse addProfile( Profile profile ) {
-		CreateProfileCommand command = new CreateProfileCommand( profile );
+	private Response sendCommand( Command command ) {
 		try {
 			Client.oos.writeObject( command );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ProfileCreationResponse response = null;
+		Response returnValue = null;
+		try {
+			returnValue = (Response) Client.ois.readObject();
+		} catch (IOException|ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return returnValue;
+	}
+
+	private void setClientProfile( String username ) {
+		Command command = new GetProfileCommand( username );
+		GetProfileResponse response = (GetProfileResponse) this.sendCommand( command );
+		Client.setProfile( response.getProfile() );
+		command = new SetProfileCommand( response.getProfile() );
+		this.sendCommand( command );
+	}
+
+	private boolean isLoginInformationValid( LoginInformation loginInformation ) {
+		Command loginValidation = new CheckLoginValidnessCommand( loginInformation );
+/*		try {
+			Client.oos.writeObject( loginValidation );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		LoginIsValidResponse response = (LoginIsValidResponse) this.sendCommand( loginValidation );
+/*		LoginIsValidResponse response = null;
+		try {
+			response = (LoginIsValidResponse) Client.ois.readObject();
+		} catch (IOException|ClassNotFoundException e) {
+			e.printStackTrace();
+		}*/
+//		System.out.println( "Handler Response: " + response );
+		return response.getAnswer();
+	}
+
+	private ProfileCreationResponse addProfile( Profile profile ) {
+		CreateProfileCommand command = new CreateProfileCommand( profile );
+/*		try {
+			Client.oos.writeObject( command );
+		} catch (IOException e) {
+			e.printStackTrace();
+		}*/
+		ProfileCreationResponse response = (ProfileCreationResponse) this.sendCommand( command );
+/*		ProfileCreationResponse response = null;
 		try {
 			response = (ProfileCreationResponse) Client.ois.readObject();
 		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
-		}
+		}*/
 		return response;
 	}
 
@@ -148,6 +169,7 @@ public class FirstPageController extends ParentController implements Initializab
 		returnValue.setUserName( signupUsernameField.getText() );
 		returnValue.setPassword( signupPasswordField.getText() );
 		returnValue.setName( signupNameField.getText() );
+		returnValue.setImageAddress( profilePicture.getImage().getUrl().toString() );
 		return returnValue;
 	}
 

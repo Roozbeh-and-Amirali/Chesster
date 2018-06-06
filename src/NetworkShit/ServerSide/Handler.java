@@ -5,6 +5,9 @@ import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CheckLoginValidnessCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCommand;
+import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
+import ClientAndHandlerCommunication.Commands.FirstPageCommands.SetProfileCommand;
+import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
 import ClientAndHandlerCommunication.Responses.Response;
@@ -20,6 +23,8 @@ public class Handler implements Runnable {
 
 	private GameState gameState; //current state of game!
 	private Socket socket;	//Socket that refers to client-e marboote
+
+	private Profile profile;	//Profile-e marboot be Client-e Marboote :))
 
 //	iosHaa-e Mored-e Niaaz
 	private ObjectInputStream ois;
@@ -79,6 +84,13 @@ public class Handler implements Runnable {
 			for ( Profile temp : Server.profiles )
 				System.out.print( temp + " " );*/
 		}
+		else if ( command instanceof GetProfileCommand ){
+		    Profile profile = Server.profiles.get( ((GetProfileCommand) command).getUserName() );
+		    returnValue = new GetProfileResponse( profile );
+		}
+		else if ( command instanceof SetProfileCommand ){
+			this.setProfile( ((SetProfileCommand) command).getProfile() );
+		}
 		return returnValue;
 	}
 
@@ -114,6 +126,14 @@ public class Handler implements Runnable {
 
 	private void setSocket( Socket socket ) {
 		this.socket = socket;
+	}
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
 	}
 
 }

@@ -1,5 +1,6 @@
 package NetworkShit.ClientSide;
 
+import Game.Profile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,6 +14,8 @@ public class Client extends Application {
 
 //	Stage-e Asli-e Barnaame!
 	public static Stage pStage;
+
+	private static Profile profile;
 
 	public static Socket socket;
 	public static ObjectInputStream ois;
@@ -45,4 +48,13 @@ public class Client extends Application {
 		Client.pStage.setScene( new Scene( root, 1280, 720 ) );
 		Client.pStage.show();
 	}
+
+	public static Profile getProfile() {
+		return profile;
+	}
+
+	public static void setProfile(Profile profile) {
+		Client.profile = profile;
+	}
+
 }
