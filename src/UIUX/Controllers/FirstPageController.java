@@ -11,6 +11,7 @@ import Game.Profile;
 import NetworkShit.ClientSide.Client;
 import NetworkShit.ServerSide.Server;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -20,8 +21,12 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class FirstPageController extends ParentController{
+public class FirstPageController extends ParentController implements Initializable {
+
+	private final static String PROFILE_PICTURE_DEFAULT = "/Assets/FirstPage/default_contact.png";
 
 	@FXML
 	TextField loginUsernameField;
@@ -38,7 +43,13 @@ public class FirstPageController extends ParentController{
 	@FXML
 	TextField signupNameField;
 
-//	VaghT taraf dokme-e login ro mizane, in taabe' sedaa zade mishe
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+		Image image = new Image( FirstPageController.PROFILE_PICTURE_DEFAULT );
+		this.profilePicture.setImage( image );
+	}
+
+	//	VaghT taraf dokme-e login ro mizane, in taabe' sedaa zade mishe
 	public void doLoginStuff() {
 		if ( loginUsernameField.getText().isEmpty() || loginPasswordField.getText().isEmpty() ) { //Age yeki az fieldHaa-e mored-e niaaz khaali boodan
 			this.showFillRequiredFieldsDialog();	//Be taraf befahmoon ke baayad poreshoon kone!
@@ -127,7 +138,7 @@ public class FirstPageController extends ParentController{
 		this.signupPasswordField.setText( null );
 		this.signupConfirmPasswordField.setText( null );
 		this.signupNameField.setText( null );
-		Image temp = new Image( "/Assets/FirstPage/unknown-contact.png" );
+		Image temp = new Image( FirstPageController.PROFILE_PICTURE_DEFAULT );
 		this.profilePicture.setImage( temp );
 	}
 
