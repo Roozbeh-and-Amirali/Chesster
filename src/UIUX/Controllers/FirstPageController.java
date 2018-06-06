@@ -85,6 +85,10 @@ public class FirstPageController extends ParentController implements Initializab
 			this.showMismatchPasswordsDialog();	//Be taraf begoo ke paswoordHaash be ham nemikhoran!
 			return;
 		}
+		if ( this.doesUsernameExist( signupUsernameField.getText() ) ){
+			this.showUsernameExistsDialog();
+			return;
+		}
 //		Khob, hamechi OK e... profili ke taraf khaaste besaaze ro besaaz va berizesh too-e justCreatedProfile
 		Profile justCreatedProfile = this.makeProfileFromPageContent();
 //		System.out.println( justCreatedProfile );
@@ -95,7 +99,7 @@ public class FirstPageController extends ParentController implements Initializab
 
 	}
 
-	private Response sendCommand( Command command ) {
+/*	private Response sendCommand( Command command ) {
 		try {
 			Client.oos.writeObject( command );
 		} catch (IOException e) {
@@ -108,7 +112,7 @@ public class FirstPageController extends ParentController implements Initializab
 			e.printStackTrace();
 		}
 		return returnValue;
-	}
+	}*/
 
 	private void setClientProfile( String username ) {
 		Command command = new GetProfileCommand( username );
@@ -197,6 +201,12 @@ public class FirstPageController extends ParentController implements Initializab
 	public void profileCreationFailedDialog( ProfileCreationResponse response ) {
 		String title = "Failed to create profile";
 		String contentText = response.getMessage();
+		this.makeAndShowInformationDialog( title, contentText );
+	}
+
+	public void showUsernameExistsDialog() {
+		String title = "Failed to create profile";
+		String contentText = "Username already exists, choose another one!";
 		this.makeAndShowInformationDialog( title, contentText );
 	}
 

@@ -7,9 +7,11 @@ import ClientAndHandlerCommunication.Commands.FirstPageCommands.CheckLoginValidn
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.SetProfileCommand;
+import ClientAndHandlerCommunication.Commands.ParentCommands.UsernameExistenceCommand;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
+import ClientAndHandlerCommunication.Responses.ParentResponds.UsernameExistenceRespond;
 import ClientAndHandlerCommunication.Responses.Response;
 import Enums.GameState;
 import Game.Profile;
@@ -90,6 +92,11 @@ public class Handler implements Runnable {
 		}
 		else if ( command instanceof SetProfileCommand ){
 			this.setProfile( ((SetProfileCommand) command).getProfile() );
+		}
+		else if ( command instanceof UsernameExistenceCommand){
+			if ( Server.profiles.get( ((UsernameExistenceCommand) command).getUsername() ) == null )
+				returnValue = new UsernameExistenceRespond( false );
+			else returnValue = new UsernameExistenceRespond( true );
 		}
 		return returnValue;
 	}
