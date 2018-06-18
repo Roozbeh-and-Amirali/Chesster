@@ -21,6 +21,10 @@ public class Match {
 
 	}
 
+	Match(Profile hostProfile){
+		this.hostProfile=hostProfile;
+	}
+
 //	Ettelaa'aat-e baaZ ro be soorat-e ye HBox barmigardoone
 	public HBox getMatchTile() {
 

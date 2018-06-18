@@ -1,6 +1,7 @@
 
 package NetworkShit.ServerSide;
 
+import Game.Match;
 import Game.Profile;
 
 import java.io.IOException;
@@ -21,6 +22,8 @@ public class Server {
 //	ProfileHaaE ke ta alaan saakhte shodan ro injaa zakhire mikonim!
 //	public static List<Profile> profiles = Collections.synchronizedList( new ArrayList<Profile>() );
 	public static Map<String, Profile> profiles = new ConcurrentHashMap<String, Profile>();
+// challenge haaE ke ta alan saakhte shodan
+	public static Map<Profile, Match> challenges=new ConcurrentHashMap<>();
 
 	public static void main(String[] args) {
 

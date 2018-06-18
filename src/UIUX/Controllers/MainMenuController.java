@@ -14,6 +14,10 @@ public class MainMenuController extends ParentController {
     @FXML
     Button profileButton;
 
+    public void toChallengePage(){
+        this.loadPage("ChallengesPage");
+    }
+
     public void showProfile() {
         this.loadPage( "ProfilePage" );
     }
