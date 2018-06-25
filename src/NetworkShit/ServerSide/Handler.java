@@ -48,6 +48,9 @@ public class Handler implements Runnable {
     @Override
     public void run() {
 		while ( true ) {
+			while ( this.gameState == GameState.IN_GAME_PAGE ) {
+//				KaarHaa-e marboot be baaZ ro anjaam bede :))
+			}
 			Command clientCommand = this.getCommandFromClient();
 			Response response = this.produceResponse( clientCommand );
 			this.sendResponseToClient( response );
