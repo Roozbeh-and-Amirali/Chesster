@@ -8,8 +8,11 @@ import NetworkShit.ClientSide.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 
 import java.io.IOException;
+import java.util.Optional;
 
 /*
 All Controllers extend this class
@@ -53,6 +56,26 @@ public class ParentController {
 
 		return respond.isAnswer();
 
+	}
+
+//	Title va Matn-e badane ro migire, va ye alert baa oon mohtaviaat neshoon mide!
+	public void makeAndShowInformationDialog( String title, String contentText ) {
+		Alert alert = new Alert( Alert.AlertType.INFORMATION );
+		alert.setTitle( title );
+		alert.setHeaderText( null );
+		alert.setContentText( contentText );
+		alert.showAndWait();
+	}
+
+//	Title va MatnHaa-e badane ro migire, baahaashoon ye TextInputDialog misaaze!
+	public String makeAndShowTextInputDialog( String title, String headerText, String contentText ) {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.setTitle( title );
+		dialog.setHeaderText( headerText );
+		dialog.setContentText( contentText );
+
+		Optional<String> result = dialog.showAndWait();
+		return ( result.isPresent() ? result.get() : null );
 	}
 
 }

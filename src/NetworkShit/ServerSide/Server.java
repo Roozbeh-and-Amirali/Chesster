@@ -26,6 +26,8 @@ public class Server {
 	public static Map<String, Profile> profiles = new ConcurrentHashMap<String, Profile>();
 // challenge haaE ke ta alan saakhte shodan
 	public static List<Match> challenges=new ArrayList<>();
+//	Ye map dREm az profileHaa be HandlerHaa
+	public static Map<Profile, Handler> chandlers = new ConcurrentHashMap<Profile, Handler>();
 
 	public static void main(String[] args) {
 

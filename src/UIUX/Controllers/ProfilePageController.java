@@ -44,6 +44,18 @@ public class ProfilePageController extends ParentController implements Initializ
 		this.profilePicture.setImage( new Image( Client.getProfile().getImageAddress() ) );
 	}
 
+	public void tryChangingUsername() {
+		String newUsername = this.makeAndShowTextInputDialog( "username", "You are about to change your username", "Please enter a username!" );
+		if ( this.doesUsernameExist( newUsername ) ) {
+			this.makeAndShowInformationDialog("Invalid username", "Username already exists!");
+			return;
+		}
+		else {
+			Client.getProfile().setUserName( this.usernameField.getText() );
+
+		}
+	}
+
 	public void goToMainMenu() {
 		this.loadPage( "MainMenu" );
 	}

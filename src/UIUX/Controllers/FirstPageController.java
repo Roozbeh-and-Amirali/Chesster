@@ -188,13 +188,13 @@ public class FirstPageController extends ParentController implements Initializab
 	}
 
 //	Title va Matn-e badane ro migire, va ye alert baa oon mohtaviaat neshoon mide!
-	public void makeAndShowInformationDialog( String title, String contentText ) {
+/*	public void makeAndShowInformationDialog( String title, String contentText ) {
 		Alert alert = new Alert( Alert.AlertType.INFORMATION );
 		alert.setTitle( title );
 		alert.setHeaderText( null );
 		alert.setContentText( contentText );
 		alert.showAndWait();
-	}
+	}*/
 
 //	AlertHaa-e mokhtalef ro injaa misaazim... bad baa komak-e makeAndShowInformationDialog neshooneshoon midim!
 
