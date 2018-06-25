@@ -3,17 +3,17 @@ package ChessGame.ChizaayeMohrehaa.SpecificMohre;
 import BasicClasses.Cord;
 import ChessGame.Board;
 import ChessGame.ChizaayeMohrehaa.Mohre;
+import Enums.Color;
 
 public class Fil extends Mohre {
 
-    @Override
-    public void move(Board board, Cord dest) {
+	public Fil(Color color, Cord cord ) {
+		super( color, cord );
+	}
 
-    }
-
-    @Override
-    public boolean isMoveValid(Board board, Cord dest) {
-        return false;
-    }
+	@Override
+	public boolean isMoveValid(Board board, Cord dest) {
+		return false;
+	}
 
 }

@@ -3,12 +3,12 @@ package ChessGame.ChizaayeMohrehaa.SpecificMohre;
 import BasicClasses.Cord;
 import ChessGame.Board;
 import ChessGame.ChizaayeMohrehaa.Mohre;
+import Enums.Color;
 
 public class Rokh extends Mohre {
 
-    @Override
-    public void move(Board board, Cord dest) {
-
+    public Rokh(Color color, Cord cord ) {
+        super( color, cord );
     }
 
     @Override
