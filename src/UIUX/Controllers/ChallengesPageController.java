@@ -19,7 +19,7 @@ public class ChallengesPageController extends ParentController implements Initia
     public void initialize(URL location, ResourceBundle resources) {
 
         // vaghti safhe baz mishe... challengaye tooye server roo miad tooye vboxesh add mikone
-        for (Match match: Server.challenges.values()) {
+        for (Match match: Server.challenges) {
             this.challengesVBox.getChildren().add(match.getMatchTile());
         }
 

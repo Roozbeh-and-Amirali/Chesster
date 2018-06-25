@@ -7,6 +7,8 @@ import Game.Profile;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,7 +25,7 @@ public class Server {
 //	public static List<Profile> profiles = Collections.synchronizedList( new ArrayList<Profile>() );
 	public static Map<String, Profile> profiles = new ConcurrentHashMap<String, Profile>();
 // challenge haaE ke ta alan saakhte shodan
-	public static Map<Profile, Match> challenges=new ConcurrentHashMap<>();
+	public static List<Match> challenges=new ArrayList<>();
 
 	public static void main(String[] args) {
 

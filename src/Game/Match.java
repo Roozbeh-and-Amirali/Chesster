@@ -1,39 +1,55 @@
 package Game;
 
+import NetworkShit.ServerSide.Handler;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 Vaghti ye baaZ misaaZm, ye object az in celass saakhre mishe!
  */
 
-public class Match {
+public class Match implements Runnable {
 
-//	private HBox matchTile;
 
-//	In ke baaZ-e mored-e nazar, rated hastesh yaa unrated!
-	private Ratability ratability;
+    //handler haye user yahe bazi
+    private List<Handler> handlers = new ArrayList<>();
+    //	private HBox matchTile;
 
-//	Har baaZ do ta player daare, kasi ke baaZ ro sakhte va kasi ke join shode!
-	private Profile hostProfile, guestProfile;
+    //	In ke baaZ-e mored-e nazar, rated hastesh yaa unrated!
+    private Ratability ratability;
 
-	Match() {
+    //	Har baaZ do ta player daare, kasi ke baaZ ro sakhte va kasi ke join shode!
+    private Profile hostProfile, guestProfile;
 
-	}
+    Match() {
 
-	Match(Profile hostProfile){
-		this.hostProfile=hostProfile;
-	}
+    }
 
-//	Ettelaa'aat-e baaZ ro be soorat-e ye HBox barmigardoone
-	public HBox getMatchTile() {
+    Match(Profile hostProfile) {
+        this.hostProfile = hostProfile;
+    }
 
-		HBox matchTile = new HBox();
+    //	Ettelaa'aat-e baaZ ro be soorat-e ye HBox barmigardoone
+    public HBox getMatchTile() {
 
-		Label rateLabel = new Label( ratability.toString() );
+        HBox matchTile = new HBox();
 
-		matchTile.getChildren().addAll(rateLabel);
-		return matchTile;
-	}
+        Label rateLabel = new Label(ratability.toString());
 
+        matchTile.getChildren().addAll(rateLabel);
+        return matchTile;
+    }
+
+    @Override
+    public void run() {
+
+    }
+
+
+    public List<Handler> getHandlers() {
+        return handlers;
+    }
 }
