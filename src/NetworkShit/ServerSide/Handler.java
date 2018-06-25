@@ -3,11 +3,13 @@ package NetworkShit.ServerSide;
 
 import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
+import ClientAndHandlerCommunication.Commands.Common.ChangeGameStateCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CheckLoginValidnessCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.SetProfileCommand;
 import ClientAndHandlerCommunication.Commands.ParentCommands.UsernameExistenceCommand;
+import ClientAndHandlerCommunication.Responses.Common.ChangeGameStateResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
@@ -93,6 +95,10 @@ public class Handler implements Runnable {
 			if ( Server.profiles.get( ((UsernameExistenceCommand) command).getUsername() ) == null )
 				returnValue = new UsernameExistenceRespond( false );
 			else returnValue = new UsernameExistenceRespond( true );
+		}
+		else if ( command instanceof ChangeGameStateCommand){
+			this.gameState = ((ChangeGameStateCommand) command).getGameState();
+			returnValue = new ChangeGameStateResponse( true );
 		}
 		return returnValue;
 	}
