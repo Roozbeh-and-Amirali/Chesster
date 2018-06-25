@@ -81,10 +81,6 @@ public class Handler implements Runnable {
 		else if ( command instanceof CreateProfileCommand ) {
 			Profile newProfile = ((CreateProfileCommand) command).getProfile();
 			returnValue = this.addProfile( newProfile );
-//			Server.profiles.add( newProfile );
-/*			System.out.println( "Profiles: " );
-			for ( Profile temp : Server.profiles )
-				System.out.print( temp + " " );*/
 		}
 		else if ( command instanceof GetProfileCommand ){
 		    Profile profile = Server.profiles.get( ((GetProfileCommand) command).getUserName() );
