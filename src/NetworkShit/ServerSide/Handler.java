@@ -100,10 +100,14 @@ public class Handler implements Runnable {
 			else returnValue = new UsernameExistenceRespond( true );
 		}
 		else if ( command instanceof ChangeGameStateCommand){
-			this.gameState = ((ChangeGameStateCommand) command).getGameState();
-			returnValue = new ChangeGameStateResponse( true );
+		    returnValue = this.changeGameStateThings( (ChangeGameStateCommand) command );
 		}
 		return returnValue;
+	}
+
+	private Response changeGameStateThings( ChangeGameStateCommand command ) {
+	    this.gameState = command.getGameState();
+		return new ChangeGameStateResponse( true );
 	}
 
 	private ProfileCreationResponse addProfile( Profile profile ) {
@@ -115,8 +119,8 @@ public class Handler implements Runnable {
 		else {
 			returnValue = new ProfileCreationResponse(true, "User created successfully");
 			Server.profiles.put( profile.getUserName(), profile );
-			for (Map.Entry<String,Profile> iterator : Server.profiles.entrySet() )
-				System.out.print ( iterator.getKey() + " " + iterator.getValue()+ "     " );
+/*			for (Map.Entry<String,Profile> iterator : Server.profiles.entrySet() )
+				System.out.print ( iterator.getKey() + " " + iterator.getValue()+ "     " );*/
 			System.out.println();
 		}
 		return returnValue;
