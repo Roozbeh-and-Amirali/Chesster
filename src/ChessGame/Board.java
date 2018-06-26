@@ -7,9 +7,9 @@ import Enums.Color;
 
 public class Board {
 
-	private static final int SIZE = 8;
+	public static final int SIZE = 8;
 
-	Block[][] blocks;
+	private Block[][] blocks;
 
 	public Board() {
 		this.blocks = new Block[ Board.SIZE ][ Board.SIZE ];
@@ -38,5 +38,13 @@ public class Board {
 	    for ( int i = 0; i < Board.SIZE; i++ )
 	        this.blocks[satr][i] = new Block( new Sarbaaz( color, new Cord( satr, i ) ) );
     }
+
+	public Block[][] getBlocks() {
+		return blocks;
+	}
+
+	public void setBlocks(Block[][] blocks) {
+		this.blocks = blocks;
+	}
 
 }
