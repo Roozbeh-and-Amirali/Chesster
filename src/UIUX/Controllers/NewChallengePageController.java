@@ -10,6 +10,7 @@ import Game.ClockNiggas.Clockability;
 import Game.ClockNiggas.Clocked;
 import Game.ClockNiggas.UnClocked;
 import Game.Match;
+import Game.Profile;
 import Game.RateNiggas.Ratability;
 import Game.RateNiggas.Rated;
 import Game.RateNiggas.UnRated;
@@ -76,9 +77,9 @@ public class NewChallengePageController extends ParentController implements Init
         try {
             Time temptime = getTimeInput();
 
-            GetProfileResponse profileGET= (GetProfileResponse) this.sendCommand(new GetProfileCommand(Client.getProfile().getUserName()));
-
-            Match match=new Match(profileGET.getProfile());
+            GetProfileResponse profileGET = (GetProfileResponse) this.sendCommand(new GetProfileCommand(Client.getProfile().getUserName()));
+            Profile myProfile = profileGET.getProfile();
+            Match match = new Match(myProfile);
             Clock matchclock = new Clock(temptime);
             Clockability gameClockability;
             Ratability gameratabillity;
@@ -90,9 +91,9 @@ public class NewChallengePageController extends ParentController implements Init
                 gameratabillity = new Rated();
 
             if (clockedRadio.isSelected())
-                gameClockability=new Clocked();
+                gameClockability = new Clocked();
             else
-                gameClockability=new UnClocked();
+                gameClockability = new UnClocked();
 
 
             match.setClock(matchclock);
@@ -102,30 +103,39 @@ public class NewChallengePageController extends ParentController implements Init
 
             this.sendCommand(new CreateMatchCommand(match));
 
+            myProfile.setMyChallenges(myProfile.getMyChallenges() + 1);
+            loadPage("ChallengesPage");
+
         } catch (Exception e) {
-           // e.printStackTrace();
+            // e.printStackTrace();
             clockWarning.setText(new IllegalTimeInput().toString());
         }
-        loadPage("ChallengesPage");
 
 
     }
 
-    public void disableClock(){
+    public void disableClock() {
         unClockedRadio.setDisable(true);
         clockedRadio.setSelected(true);
+        this.showClock();
     }
 
-    public void enableClock(){
+    public void enableClock() {
         unClockedRadio.setDisable(false);
+
     }
 
     private Time getTimeInput() throws Exception {
         int tempSeconds = 0;
         int tempMinutes = 0;
-        tempSeconds = Integer.parseInt(seconds.getText());
-        tempMinutes = Integer.parseInt(minutes.getText());
-        if (ratedRadio.isSelected() && tempMinutes==0 && tempSeconds==0)
+        if (unClockedRadio.isSelected()) {
+            tempMinutes = 59;
+            tempSeconds = 59;
+        } else {
+            tempSeconds = Integer.parseInt(seconds.getText());
+            tempMinutes = Integer.parseInt(minutes.getText());
+        }
+        if (ratedRadio.isSelected() && tempMinutes == 0 && tempSeconds == 0)
             throw new IllegalTimeInput();
         if (tempMinutes > 59 || tempMinutes < 0 || tempSeconds > 59 || tempSeconds < 0) {
             throw new IllegalTimeInput();

@@ -16,9 +16,13 @@ public class Profile implements Serializable {
     private String name;
     private String imageAddress;
     private Rating rating;
+    private int myChallenges; //number of challenges this user crated
 
     public Profile() {
-        this.rating = new Rating( Rating.DEFAULT_RATING );
+
+        this.rating = new Rating( Rating.DEFAULT_RATING);
+        this.myChallenges=0;
+
     }
 
     @Override
@@ -62,7 +66,17 @@ public class Profile implements Serializable {
         return rating.getValue();
     }
 
+    public int getMyChallenges() {
+        return myChallenges;
+    }
+
+    public void setMyChallenges(int myChallenges) {
+        this.myChallenges = myChallenges;
+    }
+
     private void setRating(long rating) {
         this.rating.setValue( rating );
     }
+
+
 }

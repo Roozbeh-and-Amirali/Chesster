@@ -36,6 +36,8 @@ public class Handler implements Runnable,Serializable {
 
 	private Profile profile;	//Profile-e marboot be Client-e Marboote :))
 
+	private boolean isclientConnected;
+
 //	iosHaa-e Mored-e Niaaz
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
@@ -53,14 +55,17 @@ public class Handler implements Runnable,Serializable {
 
     @Override
     public void run() {
-		while ( true ) {
-			while ( this.gameState == GameState.IN_GAME_PAGE ) {
+		this.isclientConnected=true;
+
+			while (isclientConnected) {
+				while (this.gameState == GameState.IN_GAME_PAGE) {
 //				KaarHaa-e marboot be baaZ ro anjaam bede :))
+				}
+				Command clientCommand = this.getCommandFromClient();
+				Response response = this.produceResponse(clientCommand);
+				this.sendResponseToClient(response);
 			}
-			Command clientCommand = this.getCommandFromClient();
-			Response response = this.produceResponse( clientCommand );
-			this.sendResponseToClient( response );
-		}
+
     }
 
     private Command getCommandFromClient() {
@@ -69,6 +74,12 @@ public class Handler implements Runnable,Serializable {
 			returnValue = (Command) this.ois.readObject();
 
 		} catch (IOException|ClassNotFoundException e) {
+			if (e instanceof EOFException){
+				System.out.println(this.profile.getUserName()+" disconnected.");
+				this.isclientConnected=false;
+
+			}
+			else
 			e.printStackTrace();
 		}
 		return returnValue;
@@ -78,6 +89,12 @@ public class Handler implements Runnable,Serializable {
 		try {
 			this.oos.writeObject( response );
 		} catch (IOException e) {
+			if (e instanceof EOFException){
+				System.out.println(this.profile.getUserName()+" disconnected.");
+				this.isclientConnected=false;
+
+			}
+			else
 			e.printStackTrace();
 		}
 	}
@@ -119,11 +136,7 @@ public class Handler implements Runnable,Serializable {
 		else if (command instanceof CreateMatchCommand){
 			Match match=((CreateMatchCommand) command).getMatch();
 			Server.challenges.add(match);
-			for (Match m:Server.challenges
-				 ) {
-				System.out.println(m.getHostProfile().getUserName());
 
-			}
 			returnValue=null;
 		}
 			return returnValue;
@@ -174,6 +187,10 @@ public class Handler implements Runnable,Serializable {
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+
 	}
+
+
+
 
 }
