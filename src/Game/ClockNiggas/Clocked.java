@@ -1,4 +1,5 @@
 package Game.ClockNiggas;
 
-public class Clocked {
+public class Clocked implements Clockability {
+
 }

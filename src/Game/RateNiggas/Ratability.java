@@ -4,5 +4,7 @@ package Game.RateNiggas;
 Moshakhas mikone ke baaZ-e mored-e nazaremoon rated e ya unrated
  */
 
-public interface Ratability {
+import java.io.Serializable;
+
+public interface Ratability extends Serializable {
 }

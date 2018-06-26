@@ -8,22 +8,28 @@ import ClientAndHandlerCommunication.Commands.FirstPageCommands.CheckLoginValidn
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.SetProfileCommand;
+import ClientAndHandlerCommunication.Commands.NewChallengeCommands.CreateMatchCommand;
+import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
 import ClientAndHandlerCommunication.Commands.ParentCommands.UsernameExistenceCommand;
 import ClientAndHandlerCommunication.Responses.Common.ChangeGameStateResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
+import ClientAndHandlerCommunication.Responses.NewChallengeResponse.GetChallengesResponse;
 import ClientAndHandlerCommunication.Responses.ParentResponds.UsernameExistenceRespond;
 import ClientAndHandlerCommunication.Responses.Response;
 import Enums.GameState;
+import Game.Match;
 import Game.Profile;
 
 import java.io.*;
 import java.net.Socket;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 //Client Handler
-public class Handler implements Runnable {
+public class Handler implements Runnable,Serializable {
 
 	private GameState gameState; //current state of game!
 	private Socket socket;	//Socket that refers to client-e marboote
@@ -61,6 +67,7 @@ public class Handler implements Runnable {
 		Command returnValue = null;
 		try {
 			returnValue = (Command) this.ois.readObject();
+
 		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -102,7 +109,24 @@ public class Handler implements Runnable {
 		else if ( command instanceof ChangeGameStateCommand){
 		    returnValue = this.changeGameStateThings( (ChangeGameStateCommand) command );
 		}
-		return returnValue;
+		else if ( command instanceof GetChallengesCommand){
+			GetChallengesResponse challengesResponse=new GetChallengesResponse();
+			List<Match> serverChallenges=new ArrayList<>(Server.challenges);
+			Collections.copy(serverChallenges,Server.challenges);
+			challengesResponse.setChallenges(serverChallenges);
+			returnValue=challengesResponse;
+		}
+		else if (command instanceof CreateMatchCommand){
+			Match match=((CreateMatchCommand) command).getMatch();
+			Server.challenges.add(match);
+			for (Match m:Server.challenges
+				 ) {
+				System.out.println(m.getHostProfile().getUserName());
+
+			}
+			returnValue=null;
+		}
+			return returnValue;
 	}
 
 	private Response changeGameStateThings( ChangeGameStateCommand command ) {
