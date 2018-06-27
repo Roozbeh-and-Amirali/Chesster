@@ -4,6 +4,7 @@ package NetworkShit.ServerSide;
 import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.Common.ChangeGameStateCommand;
+import ClientAndHandlerCommunication.Commands.Common.SendChatMsgCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CheckLoginValidnessCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
@@ -129,8 +130,8 @@ public class Handler implements Runnable,Serializable {
 		else if ( command instanceof GetChallengesCommand){
 			GetChallengesResponse challengesResponse=new GetChallengesResponse();
 			List<Match> serverChallenges=new ArrayList<>(Server.challenges);
-			Collections.copy(serverChallenges,Server.challenges);
 			challengesResponse.setChallenges(serverChallenges);
+			//System.out.println(challengesResponse.getChallenges());
 			returnValue=challengesResponse;
 		}
 		else if (command instanceof CreateMatchCommand){
@@ -138,6 +139,9 @@ public class Handler implements Runnable,Serializable {
 			Server.challenges.add(match);
 
 			returnValue=null;
+		}
+		else if (command instanceof SendChatMsgCommand){
+
 		}
 			return returnValue;
 	}

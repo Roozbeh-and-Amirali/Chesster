@@ -8,6 +8,7 @@ import NetworkShit.ServerSide.Handler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,17 +44,21 @@ public class Match implements Runnable,Serializable {
 
 	//	Ettelaa'aat-e baaZ ro be soorat-e ye HBox barmigardoone
 	public HBox getMatchTile() {
-		System.out.println("gettin tile");
+		//System.out.println("gettin tile");
 		HBox matchTile = new HBox();
 		Label hostNameLabel=new Label(this.hostProfile.getUserName());
+		hostNameLabel.setFont( new Font( 20 ) );
 		Label hostRateLabel=new Label(String.valueOf(this.hostProfile.getRating()));
+		hostRateLabel.setFont( new Font( 17 ) );
 		Label rateLabel = new Label(ratability.toString());
+		rateLabel.setFont( new Font( 17 ) );
 
-		Label clockLabel;
+		Label clockLabel = null;
 		if (clockability instanceof Clocked)
 			clockLabel=new Label(clock.toString());
 		else
 			clockLabel=new Label("Un-Clocked");
+		clockLabel.setFont( new Font( 16 ) );
 
 		matchTile.getChildren().addAll(hostNameLabel,hostRateLabel,rateLabel,clockLabel);
 		matchTile.setSpacing(150);
