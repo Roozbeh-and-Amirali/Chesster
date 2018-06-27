@@ -24,19 +24,19 @@ public class Board {
 	}
 
 	private void putFirstRow( int satr, Color color ) {
-	    this.blocks[satr][0] = new Block( new Rokh( color, new Cord( satr, 0 ) ) );
-	    this.blocks[satr][1] = new Block( new Asb( color, new Cord( satr, 1 ) ) );
-	    this.blocks[satr][2] = new Block( new Fil( color, new Cord( satr, 2 ) ) );
-	    this.blocks[satr][3] = new Block( new Vazir( color, new Cord( satr, 3 ) ) );
-	    this.blocks[satr][4] = new Block( new Shaah( color, new Cord( satr, 4 ) ) );
-	    this.blocks[satr][5] = new Block( new Fil( color, new Cord( satr, 5 ) ) );
-	    this.blocks[satr][6] = new Block( new Asb( color, new Cord( satr, 6 ) ) );
-	    this.blocks[satr][7] = new Block( new Rokh( color, new Cord( satr, 7 ) ) );
+	    this.blocks[satr][0] = new Block( new Rokh( color, new Cord( 0, satr ) ) );
+	    this.blocks[satr][1] = new Block( new Asb( color, new Cord( 1, satr ) ) );
+	    this.blocks[satr][2] = new Block( new Fil( color, new Cord( 2, satr ) ) );
+	    this.blocks[satr][3] = new Block( new Vazir( color, new Cord( 3, satr ) ) );
+	    this.blocks[satr][4] = new Block( new Shaah( color, new Cord( 4, satr ) ) );
+	    this.blocks[satr][5] = new Block( new Fil( color, new Cord( 5, satr ) ) );
+	    this.blocks[satr][6] = new Block( new Asb( color, new Cord( 6, satr ) ) );
+	    this.blocks[satr][7] = new Block( new Rokh( color, new Cord( 7, satr ) ) );
     }
 
     private void putSarbaazhaa( int satr, Color color ) {
 	    for ( int i = 0; i < Board.SIZE; i++ )
-	        this.blocks[satr][i] = new Block( new Sarbaaz( color, new Cord( satr, i ) ) );
+	        this.blocks[satr][i] = new Block( new Sarbaaz( color, new Cord( i, satr ) ) );
     }
 
 	public Block[][] getBlocks() {
