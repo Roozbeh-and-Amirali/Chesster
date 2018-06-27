@@ -4,18 +4,28 @@ import ChessGame.ChizaayeMohrehaa.Mohre;
 
 public class Block {
 
-    Mohre mohre;
+	private Mohre mohre;    //MohreE ke tooshe!
 
-    public Block( Mohre mohre ) {
-        this.setMohre( mohre );
-    }
+	private boolean isSelected; //vaghT roo-e ye mohre click mikone, khooneHaaE ke mitoone bere ro barash moshakhas mikonim... in hamoon ro neshoon mide!
 
-    public Mohre getMohre() {
-        return mohre;
-    }
+	public Block( Mohre mohre ) {
+		this.setMohre( mohre );
+	}
 
-    public void setMohre(Mohre mohre) {
-        this.mohre = mohre;
-    }
+	public Mohre getMohre() {
+		return mohre;
+	}
+
+	public void setMohre(Mohre mohre) {
+		this.mohre = mohre;
+	}
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean selected) {
+		isSelected = selected;
+	}
 
 }

@@ -27,8 +27,8 @@ public class Board {
 	    this.blocks[satr][0] = new Block( new Rokh( color, new Cord( satr, 0 ) ) );
 	    this.blocks[satr][1] = new Block( new Asb( color, new Cord( satr, 1 ) ) );
 	    this.blocks[satr][2] = new Block( new Fil( color, new Cord( satr, 2 ) ) );
-	    this.blocks[satr][3] = new Block( new Shaah( color, new Cord( satr, 3 ) ) );
-	    this.blocks[satr][4] = new Block( new Vazir( color, new Cord( satr, 4 ) ) );
+	    this.blocks[satr][3] = new Block( new Vazir( color, new Cord( satr, 3 ) ) );
+	    this.blocks[satr][4] = new Block( new Shaah( color, new Cord( satr, 4 ) ) );
 	    this.blocks[satr][5] = new Block( new Fil( color, new Cord( satr, 5 ) ) );
 	    this.blocks[satr][6] = new Block( new Asb( color, new Cord( satr, 6 ) ) );
 	    this.blocks[satr][7] = new Block( new Rokh( color, new Cord( satr, 7 ) ) );
