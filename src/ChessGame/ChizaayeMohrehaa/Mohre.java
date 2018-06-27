@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public abstract class Mohre {
 
-	private static String MOHRE_IMAGES_ADDRESS = "/Assets/Mohre/";
+	private static String MOHRE_IMAGES_ADDRESS = "/Assets/Chess/Mohre/";
 
 //	private static Map< String, ImageView>;
 
@@ -38,10 +38,8 @@ public abstract class Mohre {
 
 	public abstract ArrayList< Cord > getValidDests( Board board );
 
-
-
-	public ImageView getTile() {
-		return new ImageView( new Image( Mohre.MOHRE_IMAGES_ADDRESS + this.toString() ) );
+	public Image getTile() {
+		return new Image( Mohre.MOHRE_IMAGES_ADDRESS + this.toString() );
 	}
 
 	public Mohre(Color color, Cord cord) {
