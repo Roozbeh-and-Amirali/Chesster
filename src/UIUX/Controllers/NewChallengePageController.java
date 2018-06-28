@@ -3,7 +3,10 @@ package UIUX.Controllers;
 import BasicClasses.Time;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.CreateMatchCommand;
+import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResponse;
+import ClientAndHandlerCommunication.Responses.JoinedGameResponse;
+import ClientAndHandlerCommunication.Responses.NewChallengeResponse.GetChallengesResponse;
 import Exceptions.IllegalTimeInput;
 import Game.ClockNiggas.Clock;
 import Game.ClockNiggas.Clockability;
@@ -15,6 +18,8 @@ import Game.RateNiggas.Ratability;
 import Game.RateNiggas.Rated;
 import Game.RateNiggas.UnRated;
 import NetworkShit.ClientSide.Client;
+import NetworkShit.ClientSide.WaitForJoiners;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -23,8 +28,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class NewChallengePageController extends ParentController implements Initializable {
     @FXML
@@ -44,6 +53,9 @@ public class NewChallengePageController extends ParentController implements Init
     @FXML
     Label clockWarning;
 
+    private Thread jointhread=null;
+    private WaitForJoiners waitForJoiners=null;
+
 
     public void goBack() {
         loadPage("ChallengesPage");
@@ -51,6 +63,7 @@ public class NewChallengePageController extends ParentController implements Init
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         ToggleGroup ratingRadios = new ToggleGroup();
         ratedRadio.setToggleGroup(ratingRadios);
         unratedRadio.setToggleGroup(ratingRadios);
@@ -77,8 +90,8 @@ public class NewChallengePageController extends ParentController implements Init
         try {
             Time temptime = getTimeInput();
 
-            GetProfileResponse profileGET = (GetProfileResponse) this.sendCommand(new GetProfileCommand(Client.getProfile().getUserName()));
-            Profile myProfile = profileGET.getProfile();
+           // GetProfileResponse profileGET = (GetProfileResponse) this.sendUserCommand(new GetProfileCommand(Client.getProfile().getUserName()));
+            Profile myProfile = Client.getProfile();
             Match match = new Match(myProfile);
             Clock matchclock = new Clock(temptime);
             Clockability gameClockability;
@@ -101,9 +114,64 @@ public class NewChallengePageController extends ParentController implements Init
             match.setRatability(gameratabillity);
 
 
-            this.sendCommand(new CreateMatchCommand(match));
+            this.sendUserCommand(new CreateMatchCommand(match));
 
-            myProfile.setMyChallenges(myProfile.getMyChallenges() + 1);
+            myProfile.setChallengesNumber(myProfile.getChallengesNumber() + 1);
+            myProfile.getRequestedMatches().add(match);
+
+            if (jointhread==null){
+                waitForJoiners=new WaitForJoiners();
+                jointhread=new Thread(waitForJoiners);
+                jointhread.start();
+            }
+            waitForJoiners.getMatches().add(match);
+            /*Runnable runnable=new Runnable() {
+                @Override
+                public void run() {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                System.out.println("running");
+                                JoinedGameResponse response = (JoinedGameResponse) Client.joinGameIn.readObject();
+                                System.out.println(response.getMatch().getClock().toString());
+                                loadPage("GameRoomPage");
+                            } catch (IOException | ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+                }
+            };
+            Thread thread=new Thread(runnable);
+            thread.setDaemon(true);
+            thread.start();*/
+            /*final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+            scheduler.scheduleAtFixedRate(new Runnable() {
+                @Override
+                public void run() {
+                    //while ( true ) {
+
+                            try {
+                                System.out.println("running");
+                                JoinedGameResponse response = (JoinedGameResponse) Client.joinGameIn.readObject();
+                                System.out.println(response.getMatch().getClock().toString());
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        loadPage("GameRoomPage");
+                                    }
+                            });
+                            } catch ( Exception e ) {
+                                System.exit( 5 );
+                            }
+
+
+                    //}
+                }
+            }, 1, 500, TimeUnit.MILLISECONDS );*/
+            System.out.println("saddaaaada");
             loadPage("ChallengesPage");
 
         } catch (Exception e) {

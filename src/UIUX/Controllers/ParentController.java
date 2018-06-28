@@ -35,7 +35,7 @@ public class ParentController {
 
 	}
 
-	public Response sendCommand( Command command ) {
+	public Response sendUserCommand(Command command ) {
 		try {
 			Client.userOut.writeObject( command );
 		} catch (IOException e) {
@@ -50,9 +50,27 @@ public class ParentController {
 		return response;
 	}
 
+	public void sendChatCommand(Command command){
+
+		try {
+			Client.chatOut.writeObject(command);
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+
+	}
+
+	public void sendjoinGameCommand(Command command){
+		try {
+			Client.joinGameOut.writeObject(command);
+		}catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
 	public boolean doesUsernameExist( String username ) {
 
-		UsernameExistenceRespond respond = (UsernameExistenceRespond) this.sendCommand( new UsernameExistenceCommand( username ) );
+		UsernameExistenceRespond respond = (UsernameExistenceRespond) this.sendUserCommand( new UsernameExistenceCommand( username ) );
 
 		return respond.isAnswer();
 

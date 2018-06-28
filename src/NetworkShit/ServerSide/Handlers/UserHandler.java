@@ -10,6 +10,7 @@ import ClientAndHandlerCommunication.Commands.FirstPageCommands.CreateProfileCom
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
 import ClientAndHandlerCommunication.Commands.FirstPageCommands.SetProfileCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.CreateMatchCommand;
+import ClientAndHandlerCommunication.Commands.NewChallengeCommands.DeleteChallengesCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
 import ClientAndHandlerCommunication.Commands.ParentCommands.UsernameExistenceCommand;
 import ClientAndHandlerCommunication.Responses.Common.ChangeGameStateResponse;
@@ -102,10 +103,12 @@ public class UserHandler implements Runnable,Serializable {
 	}
 
 	private Response produceResponse( Command command ) {
+		//System.out.println(this.profile);
 		Response returnValue = null;
 		if ( command instanceof CheckLoginValidnessCommand ){
 			LoginInformation temp = ((CheckLoginValidnessCommand) command).getLoginInformation();
 			boolean answer = this.isLoginValid( temp );
+
 			returnValue = new LoginIsValidResponse( answer );
 //			return ( new LoginIsValidResponse( answer ) );
 		}
@@ -141,7 +144,8 @@ public class UserHandler implements Runnable,Serializable {
 
 			returnValue=null;
 		}
-		else if (command instanceof SendChatMsgCommand){
+		else if (command instanceof DeleteChallengesCommand){
+			Server.challenges.removeAll(((DeleteChallengesCommand)command).getList());
 
 		}
 			return returnValue;
@@ -161,9 +165,11 @@ public class UserHandler implements Runnable,Serializable {
 		else {
 			returnValue = new ProfileCreationResponse(true, "User created successfully");
 			Server.profiles.put( profile.getUserName(), profile );
+
+
 /*			for (Map.Entry<String,Profile> iterator : Server.profiles.entrySet() )
 				System.out.print ( iterator.getKey() + " " + iterator.getValue()+ "     " );*/
-			System.out.println();
+			//System.out.println();
 		}
 		return returnValue;
 	}
@@ -192,10 +198,21 @@ public class UserHandler implements Runnable,Serializable {
 
 	public void setProfile(Profile profile) {
 		this.profile = profile;
+		Server.userHandlers.put(profile,this);
+		//System.out.println(Server.userHandlers);
+
 
 	}
 
 
+	/*@Override
+	public int hashCode() {
+		return this.profile.getUserName().hashCode();
+	}
 
-
+	@Override
+	public boolean equals(Object obj) {
+		UserHandler handler=(UserHandler) obj;
+		return (handler.profile.getUserName().equals(this.profile.getUserName()));
+	}*/
 }

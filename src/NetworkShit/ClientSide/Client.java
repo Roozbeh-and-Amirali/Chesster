@@ -39,14 +39,17 @@ public class Client extends Application {
 	public static void main(String[] args) {
 		try {
 			Client.userSocket = new Socket( "localhost", Ports.USER_PORT);
+			System.out.println("ewfwfw");
 			Client.userIn = new ObjectInputStream( Client.userSocket.getInputStream() );
 			Client.userOut = new ObjectOutputStream( Client.userSocket.getOutputStream() );
-
+			System.out.println("hiii");
 			Client.chatSocket=new Socket("localhost",Ports.CHAT_PORT);
+			System.out.println("chatsocket created");
 			Client.chatIn=new ObjectInputStream(Client.chatSocket.getInputStream());
 			Client.chatOut=new ObjectOutputStream(Client.chatSocket.getOutputStream());
 
 			Client.joinGameSocket=new Socket("localhost",Ports.JOINGAME_PORT);
+			System.out.println("hoingamesocket created");
 			Client.joinGameIn=new ObjectInputStream(Client.joinGameSocket.getInputStream());
 			Client.joinGameOut=new ObjectOutputStream(Client.joinGameSocket.getOutputStream());
 

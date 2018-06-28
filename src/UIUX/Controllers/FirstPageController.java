@@ -9,13 +9,10 @@ import ClientAndHandlerCommunication.Commands.FirstPageCommands.SetProfileComman
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
-import ClientAndHandlerCommunication.Responses.Response;
 import Game.Profile;
 import NetworkShit.ClientSide.Client;
-import NetworkShit.ServerSide.Server;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -23,7 +20,6 @@ import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -99,7 +95,7 @@ public class FirstPageController extends ParentController implements Initializab
 
 	}
 
-/*	private Response sendCommand( Command command ) {
+/*	private Response sendUserCommand( Command command ) {
 		try {
 			Client.userOut.writeObject( command );
 		} catch (IOException e) {
@@ -116,10 +112,10 @@ public class FirstPageController extends ParentController implements Initializab
 
 	private void setClientProfile( String username ) {
 		Command command = new GetProfileCommand( username );
-		GetProfileResponse response = (GetProfileResponse) this.sendCommand( command );
+		GetProfileResponse response = (GetProfileResponse) this.sendUserCommand( command );
 		Client.setProfile( response.getProfile() );
 		command = new SetProfileCommand( response.getProfile() );
-		this.sendCommand( command );
+		this.sendUserCommand( command );
 	}
 
 	private boolean isLoginInformationValid( LoginInformation loginInformation ) {
@@ -129,7 +125,7 @@ public class FirstPageController extends ParentController implements Initializab
 		} catch (IOException e) {
 			e.printStackTrace();
 		}*/
-		LoginIsValidResponse response = (LoginIsValidResponse) this.sendCommand( loginValidation );
+		LoginIsValidResponse response = (LoginIsValidResponse) this.sendUserCommand( loginValidation );
 /*		LoginIsValidResponse response = null;
 		try {
 			response = (LoginIsValidResponse) Client.userIn.readObject();
@@ -147,7 +143,7 @@ public class FirstPageController extends ParentController implements Initializab
 		} catch (IOException e) {
 			e.printStackTrace();
 		}*/
-		ProfileCreationResponse response = (ProfileCreationResponse) this.sendCommand( command );
+		ProfileCreationResponse response = (ProfileCreationResponse) this.sendUserCommand( command );
 /*		ProfileCreationResponse response = null;
 		try {
 			response = (ProfileCreationResponse) Client.userIn.readObject();

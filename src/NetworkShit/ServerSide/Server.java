@@ -31,8 +31,9 @@ public class Server {
 	public static Map<String, Profile> profiles = new ConcurrentHashMap<String, Profile>();
 // challenge haaE ke ta alan saakhte shodan
 	public static List<Match> challenges=new ArrayList<>();
-//	Ye map dREm az profileHaa be HandlerHaa
-	public static Map<Profile, UserHandler> chandlers = new ConcurrentHashMap<Profile, UserHandler>();
+//	Ye map dREm az profileHaa be userHandlerHaa
+	public static Map<Profile, UserHandler> userHandlers = new ConcurrentHashMap<Profile, UserHandler>();
+	public static Map<UserHandler, JoinGameHandler> joinGameHandlers = new ConcurrentHashMap<>();
 
 	public static void main(String[] args) {
 
@@ -57,18 +58,19 @@ public class Server {
 			try {
 				System.out.println( "Waiting for a client..." );
 				currentuserSocket = userSocket.accept();
+				UserHandler userHandler = new UserHandler( currentuserSocket );
 				System.out.println( "waiting for the clients chatsocket" );
 				currentChatSocket=chatSocket.accept();
+				ChatHandler chatHandler=new ChatHandler(currentChatSocket);
 				System.out.println("waiting for the clients joinsocket");
 				currentJoinSocket=joinSocket.accept();
+				JoinGameHandler joinGameHandler=new JoinGameHandler(currentJoinSocket);
+				joinGameHandlers.put(userHandler,joinGameHandler);
 				System.out.println("waiting for the clients gamesocket");
 				currentGameSocket=gameSocket.accept();
+				GameHandler gameHandler=new GameHandler(currentGameSocket);
 				System.out.println("got all the sockets nigga");
 
-				UserHandler userHandler = new UserHandler( currentuserSocket );
-				ChatHandler chatHandler=new ChatHandler(currentChatSocket);
-				JoinGameHandler joinGameHandler=new JoinGameHandler(currentJoinSocket);
-				GameHandler gameHandler=new GameHandler(currentGameSocket);
 
 				new Thread( userHandler ).start();
 				new Thread(chatHandler).start();

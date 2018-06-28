@@ -4,6 +4,8 @@ package Game;
 import BasicClasses.Rating;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
 Profile Dge... ettelaa'aat-e shakhs ro toosh daarim! ChizHaaE mesl-e
@@ -16,13 +18,28 @@ public class Profile implements Serializable {
     private String name;
     private String imageAddress;
     private Rating rating;
-    private int myChallenges; //number of challenges this user crated
+    private int challengesNumber; //number of challenges this user crated
+
+    private List<Match> requestedMatches=new ArrayList<>();
+    private Match activeMatch;
 
     public Profile() {
 
         this.rating = new Rating( Rating.DEFAULT_RATING);
-        this.myChallenges=0;
+        this.challengesNumber =0;
 
+    }
+
+
+    @Override
+    public int hashCode() {
+        return userName.hashCode();
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.userName.equals(((Profile)obj).getUserName());
     }
 
     @Override
@@ -66,17 +83,31 @@ public class Profile implements Serializable {
         return rating.getValue();
     }
 
-    public int getMyChallenges() {
-        return myChallenges;
+    public int getChallengesNumber() {
+        return challengesNumber;
     }
 
-    public void setMyChallenges(int myChallenges) {
-        this.myChallenges = myChallenges;
+    public void setChallengesNumber(int challengesNumber) {
+        this.challengesNumber = challengesNumber;
     }
 
     private void setRating(long rating) {
         this.rating.setValue( rating );
     }
 
+    public List<Match> getRequestedMatches() {
+        return requestedMatches;
+    }
 
+    public Match getActiveMatch() {
+        return activeMatch;
+    }
+
+    public void setActiveMatch(Match activeMatch) {
+        this.activeMatch = activeMatch;
+    }
+
+    public void setRequestedMatches(List<Match> requestedMatches) {
+        this.requestedMatches = requestedMatches;
+    }
 }

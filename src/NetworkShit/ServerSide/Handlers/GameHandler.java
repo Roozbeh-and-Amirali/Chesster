@@ -15,8 +15,9 @@ public class GameHandler implements Runnable{
     public GameHandler(Socket gameSocket){
         this.gameSocket =gameSocket;
         try {
-            ois=new ObjectInputStream(gameSocket.getInputStream());
+
             oos=new ObjectOutputStream(gameSocket.getOutputStream());
+            ois=new ObjectInputStream(gameSocket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

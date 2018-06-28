@@ -14,8 +14,8 @@ public class ChatHandler implements Runnable {
     public ChatHandler(Socket chatSocket){
         this.chatSocket=chatSocket;
         try {
-            ois=new ObjectInputStream(chatSocket.getInputStream());
             oos=new ObjectOutputStream(chatSocket.getOutputStream());
+            ois=new ObjectInputStream(chatSocket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }

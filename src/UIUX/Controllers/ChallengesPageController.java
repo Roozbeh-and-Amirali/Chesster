@@ -1,5 +1,7 @@
 package UIUX.Controllers;
 
+import ClientAndHandlerCommunication.Commands.JoinGameCommand;
+import ClientAndHandlerCommunication.Commands.NewChallengeCommands.DeleteChallengesCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
 import ClientAndHandlerCommunication.Responses.NewChallengeResponse.GetChallengesResponse;
 import Game.Match;
@@ -110,7 +112,7 @@ public class ChallengesPageController extends ParentController implements Initia
             }
         };
         new Thread( task ).start();*/
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
         scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -148,7 +150,6 @@ public class ChallengesPageController extends ParentController implements Initia
 
 		for (Match match: challenges) {
 			HBox matchBox=match.getMatchTile();
-			String hostName=match.getHostProfile().getUserName();
 			matchBox.setStyle("-fx-border-style: solid inside ;" + "-fx-border-width: 2px;"+"-fx-border-color: black;");
 			matchBox.setOnMouseEntered((event1)-> {
 				matchBox.setEffect(new DropShadow());
@@ -157,18 +158,18 @@ public class ChallengesPageController extends ParentController implements Initia
 				matchBox.setEffect(null);
 			});
 			matchBox.setOnMouseClicked((event3) -> {
-				joinMatchAlert(hostName);
+				joinMatchAlert(match);
 
 			});
 			 challengesVBox.getChildren().add(matchBox);
 		}
 	}
 
-	public  void joinMatchAlert(String hostName){
+	public  void joinMatchAlert(Match match){
 
 		Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("Join Match");
-		alert.setHeaderText("Do you Want to join "+hostName+"'s challenge?");
+		alert.setHeaderText("Do you Want to join "+match.getHostProfile().getUserName()+"'s challenge?");
 		alert.setContentText("Join as...");
 
 		ButtonType asAudienceButton=new ButtonType("Audience");
@@ -181,6 +182,12 @@ public class ChallengesPageController extends ParentController implements Initia
 			System.out.println("asAudience");
 		}
 		else if (as.get().equals(asContestandButton)){
+			this.sendjoinGameCommand(new JoinGameCommand(match));
+			Client.getProfile().setActiveMatch(match);
+			System.out.println(Client.getProfile().getRequestedMatches());
+			this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches())));
+			loadPage("GameRoomPage");
+
 
 		}
 		else {
