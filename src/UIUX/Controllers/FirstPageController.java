@@ -101,13 +101,13 @@ public class FirstPageController extends ParentController implements Initializab
 
 /*	private Response sendCommand( Command command ) {
 		try {
-			Client.oos.writeObject( command );
+			Client.userOut.writeObject( command );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Response returnValue = null;
 		try {
-			returnValue = (Response) Client.ois.readObject();
+			returnValue = (Response) Client.userIn.readObject();
 		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -125,14 +125,14 @@ public class FirstPageController extends ParentController implements Initializab
 	private boolean isLoginInformationValid( LoginInformation loginInformation ) {
 		Command loginValidation = new CheckLoginValidnessCommand( loginInformation );
 /*		try {
-			Client.oos.writeObject( loginValidation );
+			Client.userOut.writeObject( loginValidation );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}*/
 		LoginIsValidResponse response = (LoginIsValidResponse) this.sendCommand( loginValidation );
 /*		LoginIsValidResponse response = null;
 		try {
-			response = (LoginIsValidResponse) Client.ois.readObject();
+			response = (LoginIsValidResponse) Client.userIn.readObject();
 		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
 		}*/
@@ -143,14 +143,14 @@ public class FirstPageController extends ParentController implements Initializab
 	private ProfileCreationResponse addProfile( Profile profile ) {
 		CreateProfileCommand command = new CreateProfileCommand( profile );
 /*		try {
-			Client.oos.writeObject( command );
+			Client.userOut.writeObject( command );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}*/
 		ProfileCreationResponse response = (ProfileCreationResponse) this.sendCommand( command );
 /*		ProfileCreationResponse response = null;
 		try {
-			response = (ProfileCreationResponse) Client.ois.readObject();
+			response = (ProfileCreationResponse) Client.userIn.readObject();
 		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
 		}*/

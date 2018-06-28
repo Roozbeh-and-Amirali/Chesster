@@ -37,13 +37,13 @@ public class ParentController {
 
 	public Response sendCommand( Command command ) {
 		try {
-			Client.oos.writeObject( command );
+			Client.userOut.writeObject( command );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Response response = null;
 		try {
-			response = (Response) Client.ois.readObject();
+			response = (Response) Client.userIn.readObject();
 		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
 		}

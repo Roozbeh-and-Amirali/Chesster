@@ -3,32 +3,22 @@ package UIUX.Controllers;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
 import ClientAndHandlerCommunication.Responses.NewChallengeResponse.GetChallengesResponse;
 import Game.Match;
-import NetworkShit.ClientSide.ChallengesReceiver;
 import NetworkShit.ClientSide.Client;
-import NetworkShit.ServerSide.Server;
 import javafx.application.Platform;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -56,8 +46,8 @@ public class ChallengesPageController extends ParentController implements Initia
 								try {
 									while ( true ) {
 										//Thread.sleep( 10000 );
-										Client.oos.writeObject(new GetChallengesCommand());
-										GetChallengesResponse response = (GetChallengesResponse) Client.ois.readObject();
+										Client.userOut.writeObject(new GetChallengesCommand());
+										GetChallengesResponse response = (GetChallengesResponse) Client.userIn.readObject();
 										ChallengesPageController.this.createHbox(response.getChallenges());
 									}
 								} catch (IOException|ClassNotFoundException ioexception) {
@@ -88,8 +78,8 @@ public class ChallengesPageController extends ParentController implements Initia
 							try {
 								Thread.sleep(500);
                                 System.out.println( "Getttting challenges lists!" );
-								Client.oos.writeObject(new GetChallengesCommand());
-								GetChallengesResponse response = (GetChallengesResponse) Client.ois.readObject();
+								Client.userOut.writeObject(new GetChallengesCommand());
+								GetChallengesResponse response = (GetChallengesResponse) Client.userIn.readObject();
                                 System.out.println( response.getChallenges() );
 								createHbox(response.getChallenges());
                                 System.out.println( "HBox meghdRdehi shod" );
@@ -108,8 +98,8 @@ public class ChallengesPageController extends ParentController implements Initia
                     while ( true ) {
                         try {
                             //Thread.sleep(500);
-                            Client.oos.writeObject(new GetChallengesCommand());
-                            GetChallengesResponse response = (GetChallengesResponse) Client.ois.readObject();
+                            Client.userOut.writeObject(new GetChallengesCommand());
+                            GetChallengesResponse response = (GetChallengesResponse) Client.userIn.readObject();
                             createHbox(response.getChallenges());
                         } catch (IOException|ClassNotFoundException e ){
                             System.exit( 5 );
@@ -129,8 +119,8 @@ public class ChallengesPageController extends ParentController implements Initia
                         @Override
                         public void run() {
                             try {
-                                Client.oos.writeObject(new GetChallengesCommand());
-                                GetChallengesResponse response = (GetChallengesResponse) Client.ois.readObject();
+                                Client.userOut.writeObject(new GetChallengesCommand());
+                                GetChallengesResponse response = (GetChallengesResponse) Client.userIn.readObject();
                                 createHbox(response.getChallenges());
                             } catch ( Exception e ) {
                                 System.exit( 5 );

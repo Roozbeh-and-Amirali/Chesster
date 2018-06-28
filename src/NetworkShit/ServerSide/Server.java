@@ -1,8 +1,12 @@
 
 package NetworkShit.ServerSide;
 
+import Enums.Ports;
 import Game.Match;
 import Game.Profile;
+import NetworkShit.ServerSide.Handlers.ChatHandler;
+import NetworkShit.ServerSide.Handlers.GameHandler;
+import NetworkShit.ServerSide.Handlers.JoinGameHandler;
 import NetworkShit.ServerSide.Handlers.UserHandler;
 
 import java.io.IOException;
@@ -37,21 +41,40 @@ public class Server {
 		ServerSocket joinSocket=null;
 		ServerSocket gameSocket=null;
 		try {
-			userSocket = new ServerSocket( 1958 );
+			userSocket = new ServerSocket(Ports.USER_PORT );
+			chatSocket=new ServerSocket(Ports.CHAT_PORT);
+			joinSocket=new ServerSocket(Ports.JOINGAME_PORT);
+			gameSocket=new ServerSocket(Ports.GAME_PORT);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		while ( Server.isIsServerUp() ){
 			Socket currentuserSocket = null;
+			Socket currentChatSocket=null;
+			Socket currentJoinSocket=null;
+			Socket currentGameSocket=null;
 			try {
 				System.out.println( "Waiting for a client..." );
 				currentuserSocket = userSocket.accept();
-				System.out.println( "Found a Client!" );
+				System.out.println( "waiting for the clients chatsocket" );
+				currentChatSocket=chatSocket.accept();
+				System.out.println("waiting for the clients joinsocket");
+				currentJoinSocket=joinSocket.accept();
+				System.out.println("waiting for the clients gamesocket");
+				currentGameSocket=gameSocket.accept();
+				System.out.println("got all the sockets nigga");
 
-				UserHandler temp = new UserHandler( currentuserSocket );
-				Thread handlerThread = new Thread( temp );
-				handlerThread.start();
+				UserHandler userHandler = new UserHandler( currentuserSocket );
+				ChatHandler chatHandler=new ChatHandler(currentChatSocket);
+				JoinGameHandler joinGameHandler=new JoinGameHandler(currentJoinSocket);
+				GameHandler gameHandler=new GameHandler(currentGameSocket);
+
+				new Thread( userHandler ).start();
+				new Thread(chatHandler).start();
+				new Thread(joinGameHandler).start();
+				new Thread(gameHandler).start();
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

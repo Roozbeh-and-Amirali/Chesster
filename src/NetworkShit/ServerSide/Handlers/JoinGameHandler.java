@@ -5,22 +5,36 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ChatHandler implements Runnable {
+public class JoinGameHandler implements Runnable {
+
+
+
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
 
-    private Socket chatSocket;
+    private Socket joinGameSocket;
 
-    public ChatHandler(Socket chatSocket){
-        this.chatSocket=chatSocket;
+    public JoinGameHandler(Socket joinGameSocket){
+        this.joinGameSocket=joinGameSocket;
         try {
-            ois=new ObjectInputStream(chatSocket.getInputStream());
-            oos=new ObjectOutputStream(chatSocket.getOutputStream());
+            ois=new ObjectInputStream(joinGameSocket.getInputStream());
+            oos=new ObjectOutputStream(joinGameSocket.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Override

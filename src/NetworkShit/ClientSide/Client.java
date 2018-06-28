@@ -1,5 +1,6 @@
 package NetworkShit.ClientSide;
 
+import Enums.Ports;
 import Game.Profile;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,17 +18,44 @@ public class Client extends Application {
 
 	private static Profile profile;
 
-	public static Socket socket;
-	public static ObjectInputStream ois;
-	public static ObjectOutputStream oos;
+	public static Socket userSocket;
+	public static ObjectInputStream userIn;
+	public static ObjectOutputStream userOut;
+
+	public static Socket chatSocket;
+	public static ObjectInputStream chatIn;
+	public static ObjectOutputStream chatOut;
+
+	public static Socket joinGameSocket;
+	public static ObjectInputStream joinGameIn;
+	public static ObjectOutputStream joinGameOut;
+
+	public static Socket gameSocket;
+	public static ObjectInputStream gameIn;
+	public static ObjectOutputStream gameOut;
+
+
 
 	public static void main(String[] args) {
 		try {
-			Client.socket = new Socket( "localhost", 1958 );
+			Client.userSocket = new Socket( "localhost", Ports.USER_PORT);
+			Client.userIn = new ObjectInputStream( Client.userSocket.getInputStream() );
+			Client.userOut = new ObjectOutputStream( Client.userSocket.getOutputStream() );
 
-			Client.ois = new ObjectInputStream( Client.socket.getInputStream() );
-			Client.oos = new ObjectOutputStream( Client.socket.getOutputStream() );
-			System.out.println( "Created ois and oos!" );
+			Client.chatSocket=new Socket("localhost",Ports.CHAT_PORT);
+			Client.chatIn=new ObjectInputStream(Client.chatSocket.getInputStream());
+			Client.chatOut=new ObjectOutputStream(Client.chatSocket.getOutputStream());
+
+			Client.joinGameSocket=new Socket("localhost",Ports.JOINGAME_PORT);
+			Client.joinGameIn=new ObjectInputStream(Client.joinGameSocket.getInputStream());
+			Client.joinGameOut=new ObjectOutputStream(Client.joinGameSocket.getOutputStream());
+
+			Client.gameSocket=new Socket("localhost",Ports.GAME_PORT);
+			Client.gameIn=new ObjectInputStream(Client.gameSocket.getInputStream());
+			Client.gameOut=new ObjectOutputStream(Client.gameSocket.getOutputStream());
+
+
+			System.out.println( "Created userIn and userOut!" );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
