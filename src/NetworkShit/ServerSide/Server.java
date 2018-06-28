@@ -3,6 +3,7 @@ package NetworkShit.ServerSide;
 
 import Game.Match;
 import Game.Profile;
+import NetworkShit.ServerSide.Handlers.UserHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -27,24 +28,28 @@ public class Server {
 // challenge haaE ke ta alan saakhte shodan
 	public static List<Match> challenges=new ArrayList<>();
 //	Ye map dREm az profileHaa be HandlerHaa
-	public static Map<Profile, Handler> chandlers = new ConcurrentHashMap<Profile, Handler>();
+	public static Map<Profile, UserHandler> chandlers = new ConcurrentHashMap<Profile, UserHandler>();
 
 	public static void main(String[] args) {
 
-		ServerSocket serverSocket = null;
+		ServerSocket userSocket = null;
+		ServerSocket chatSocket=null;
+		ServerSocket joinSocket=null;
+		ServerSocket gameSocket=null;
 		try {
-			serverSocket = new ServerSocket( 1958 );
+			userSocket = new ServerSocket( 1958 );
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		while ( Server.isIsServerUp() ){
-			Socket currentSocket = null;
+			Socket currentuserSocket = null;
 			try {
 				System.out.println( "Waiting for a client..." );
-				currentSocket = serverSocket.accept();
+				currentuserSocket = userSocket.accept();
 				System.out.println( "Found a Client!" );
-				Handler temp = new Handler( currentSocket );
+
+				UserHandler temp = new UserHandler( currentuserSocket );
 				Thread handlerThread = new Thread( temp );
 				handlerThread.start();
 			} catch (IOException e) {

@@ -2,7 +2,6 @@ package ClientAndHandlerCommunication.Responses.NewChallengeResponse;
 
 import ClientAndHandlerCommunication.Responses.Response;
 import Game.Match;
-import NetworkShit.ServerSide.Handler;
 
 import java.util.List;
 

@@ -1,5 +1,5 @@
 
-package NetworkShit.ServerSide;
+package NetworkShit.ServerSide.Handlers;
 
 import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
@@ -22,6 +22,7 @@ import ClientAndHandlerCommunication.Responses.Response;
 import Enums.GameState;
 import Game.Match;
 import Game.Profile;
+import NetworkShit.ServerSide.Server;
 
 import java.io.*;
 import java.net.Socket;
@@ -29,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//Client Handler
-public class Handler implements Runnable,Serializable {
+//Client UserHandler
+public class UserHandler implements Runnable,Serializable {
 
 	private GameState gameState; //current state of game!
 	private Socket socket;	//Socket that refers to client-e marboote
@@ -43,7 +44,7 @@ public class Handler implements Runnable,Serializable {
 	private ObjectInputStream ois;
 	private ObjectOutputStream oos;
 
-	public Handler( Socket socket ) {
+	public UserHandler(Socket socket ) {
 	    this.setSocket( socket );	//Socket ro set mikonim!
 	    gameState = GameState.MAIN_MENU; //Avvalesh too-e MainMenuEm!
 		try {

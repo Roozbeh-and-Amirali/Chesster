@@ -136,7 +136,7 @@ public class FirstPageController extends ParentController implements Initializab
 		} catch (IOException|ClassNotFoundException e) {
 			e.printStackTrace();
 		}*/
-//		System.out.println( "Handler Response: " + response );
+//		System.out.println( "UserHandler Response: " + response );
 		return response.getAnswer();
 	}
 
