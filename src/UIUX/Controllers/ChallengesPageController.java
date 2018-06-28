@@ -166,31 +166,51 @@ public class ChallengesPageController extends ParentController implements Initia
 	}
 
 	public  void joinMatchAlert(Match match){
+		if (!match.getHostProfile().equals(Client.getProfile())) {
 
-		Alert alert=new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle("Join Match");
-		alert.setHeaderText("Do you Want to join "+match.getHostProfile().getUserName()+"'s challenge?");
-		alert.setContentText("Join as...");
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setTitle("Join Match");
+			alert.setHeaderText("Do you Want to join " + match.getHostProfile().getUserName() + "'s challenge?");
+			alert.setContentText("Join as...");
 
-		ButtonType asAudienceButton=new ButtonType("Audience");
-		ButtonType asContestandButton=new ButtonType("Contestant");
-		ButtonType cancel=new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+			ButtonType asAudienceButton = new ButtonType("Audience");
+			ButtonType asContestandButton = new ButtonType("Contestant");
+			ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-		alert.getButtonTypes().setAll(asAudienceButton,asContestandButton);
-		Optional<ButtonType> as=alert.showAndWait();
-		if (as.get().equals(asAudienceButton)){
-			System.out.println("asAudience");
-		}
-		else if (as.get().equals(asContestandButton)){
-			this.sendjoinGameCommand(new JoinGameCommand(match));
-			Client.getProfile().setActiveMatch(match);
-			System.out.println(Client.getProfile().getRequestedMatches());
-			this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches())));
-			loadPage("GameRoomPage");
+			alert.getButtonTypes().setAll(asAudienceButton, asContestandButton,cancel);
+			Optional<ButtonType> as = alert.showAndWait();
+			if (as.get().equals(asAudienceButton)) {
+				System.out.println("asAudience");
+			} else if (as.get().equals(asContestandButton)) {
+				this.sendjoinGameCommand(new JoinGameCommand(match));
+				Client.getProfile().setActiveMatch(match);
+				System.out.println(Client.getProfile().getRequestedMatches());
+				this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches())));
+				loadPage("GameRoomPage");
 
 
+			} else {
+
+			}
 		}
 		else {
+
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setTitle("View Match");
+			alert.setHeaderText("Do you Want to View your match?");
+			alert.setContentText("");
+
+			ButtonType view = new ButtonType("View");
+			ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+			alert.getButtonTypes().setAll(view,cancel);
+			Optional<ButtonType> as = alert.showAndWait();
+			if (as.get().equals(view)){
+				Client.getProfile().setActiveMatch(match);
+				loadPage("GameRoomPage");
+			}
+
+
 
 		}
 
