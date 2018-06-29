@@ -19,6 +19,20 @@ public class Cord {
         else return false;
     }
 
+    @Override
+    public int hashCode() {
+        return ( Integer.toString( x * 10 ) + y ).hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "(" + this.getX() + "," + this.getY() + ")";
+    }
+
+    public Cord getCopy() {
+        return new Cord( this.getX(), this.getY() );
+    }
+
     public int getX() {
         return x;
     }

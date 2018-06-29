@@ -12,6 +12,14 @@ public class Block {
 		this.setMohre( mohre );
 	}
 
+	public Block() {
+
+    }
+
+    public Block getCopy() {
+		return new Block( this.getMohre().getCopy() );
+	}
+
 	public Mohre getMohre() {
 		return mohre;
 	}

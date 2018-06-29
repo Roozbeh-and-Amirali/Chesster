@@ -11,4 +11,5 @@ public enum Color {
             default: throw new IllegalArgumentException();
         }
     }
+
 }

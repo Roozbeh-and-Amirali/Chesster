@@ -11,16 +11,47 @@ public class Board {
 
 	private Block[][] blocks;
 
-	public Board() {
+	public Board( boolean doTheInitialization ) {
 		this.blocks = new Block[ Board.SIZE ][ Board.SIZE ];
-		this.initializeBlocks();
+		if ( doTheInitialization )
+			this.initializeBlocks();
+		else
+			this.initializeWithEmptyBlocks();
+	}
+
+	public Board( Board board ) {
+		this.blocks = new Block[ Board.SIZE ][ Board.SIZE ];
+		for ( int i = 0; i < board.getBlocks().length; i++ )
+			for ( int j = 0; j < board.getBlocks()[i].length; j++ ) {
+		        Mohre currentMohreToCopy = board.getBlocks()[i][j].getMohre();
+		        if ( currentMohreToCopy == null )
+		        	this.getBlocks()[i][j] = new Block();
+		        else this.getBlocks()[i][j] = new Block( currentMohreToCopy.getCopy() );
+			}
+	}
+
+	public Mohre getShaah( Color color ) {
+	    for ( int i = 0; i < Board.SIZE; i++ )
+	    	for ( int j = 0; j < Board.SIZE; j++ ){
+	        	Mohre currentMohre = this.getBlocks()[i][j].getMohre();
+	        	if ( currentMohre instanceof Shaah && currentMohre.getColor() == color )
+	        		return currentMohre;
+			}
+		return null;
+	}
+
+	private void initializeWithEmptyBlocks() {
+		for ( int i = 0; i < this.getBlocks().length; i++ )
+			for ( int j = 0; j < this.getBlocks()[i].length; j++ )
+				this.getBlocks()[i][j] = new Block();
 	}
 
 	private void initializeBlocks() {
+	    this.initializeWithEmptyBlocks();
         this.putFirstRow( 0, Color.BLACK );
         this.putSarbaazhaa( 1, Color.BLACK );
         this.putFirstRow( Board.SIZE - 1, Color.WHITE );
-        this.putSarbaazhaa( Board.SIZE - 1, Color.WHITE );
+        this.putSarbaazhaa( Board.SIZE - 2, Color.WHITE );
 	}
 
 	private void putFirstRow( int satr, Color color ) {
@@ -39,6 +70,17 @@ public class Board {
 	        this.blocks[satr][i] = new Block( new Sarbaaz( color, new Cord( i, satr ) ) );
     }
 
+    public Board getCopy () {
+	    Board returnValue = new Board( false );
+	    for ( int i = 0; i < returnValue.getBlocks().length; i++ )
+	        for ( int j = 0; j < returnValue.getBlocks()[i].length; j++ ) {
+	    		if ( this.getBlocks()[i][j].getMohre() == null )
+	    			returnValue.getBlocks()[i][j] = new Block();
+				else returnValue.getBlocks()[i][j] = this.getBlocks()[i][j].getCopy();
+			}
+	    return returnValue;
+    }
+
 	public Block[][] getBlocks() {
 		return blocks;
 	}
@@ -47,4 +89,17 @@ public class Board {
 		this.blocks = blocks;
 	}
 
+	@Override
+	public String toString() {
+		String returnValue = new String();
+		for ( int i = 0; i < this.getBlocks().length; i++ ) {
+			for (int j = 0; j < this.getBlocks()[i].length; j++) {
+				if ( this.getBlocks()[i][j].getMohre() == null )
+					returnValue = returnValue.concat( "-" );
+				else returnValue = returnValue.concat(Character.toString(this.getBlocks()[i][j].getMohre().symbol()));
+			}
+			returnValue = returnValue.concat( "\n" );
+		}
+		return returnValue;
+	}
 }

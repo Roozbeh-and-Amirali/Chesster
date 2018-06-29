@@ -11,24 +11,15 @@ public class GameRoomController implements Initializable {
     @FXML
     TextField chatBox;
 
-
-
-
-
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
     }
 
     public void sendMsg(){
-
-
     }
 
     public void exitRoom(){
-
-
     }
 
 
