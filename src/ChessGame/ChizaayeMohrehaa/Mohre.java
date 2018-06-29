@@ -2,12 +2,15 @@
 package ChessGame.ChizaayeMohrehaa;
 
 import BasicClasses.Cord;
+import ChessGame.Block;
 import ChessGame.Board;
 import Enums.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public abstract class Mohre {
 
@@ -26,36 +29,75 @@ public abstract class Mohre {
 		this.setCord( dest );
 	}
 
-	public boolean isMoveValid( Board board, Cord dest ){
+/*	public boolean isMoveValid( Board board, Cord dest ){
 		return ( this.getValidDests( board ).contains( dest ) );
+	}*/
+
+	public boolean aayaaKishMishim( Board board, Mohre mohre, Cord destCord ) {
+		Board boardCopy = board.getCopy();
+		mohre.move( board, destCord );
+/*		System.out.println( board );
+		System.out.println();
+		System.out.println();
+		System.out.println( boardCopy );*/
+		boolean returnValue = ( this.getHarifValidCords( board ).contains( board.getShaah( this.getColor() ).getCord() ) );
+		board = new Board( boardCopy );
+		return returnValue;
 	}
 
-	public void addCorToValidCors( Board board, ArrayList< Cord > cords, Cord theCord ){ //Cor manfi nadaashte baashe... va mohre-e khoD oonjaa nabaashe!
-		if ( theCord.getX() >= 0 && theCord.getX() < Board.SIZE && theCord.getY() >= 0 && theCord.getY() < Board.SIZE )
-			if ( board.getBlocks()[theCord.getY()][theCord.getX()].getMohre().getColor() != this.getColor() )
-				cords.add( theCord );
+	public void addCorToValidCors( Board board, Mohre mohre, ArrayList< Cord > cords, Cord theCord, boolean isKishImportant ){ //Cor manfi nadaashte baashe... va mohre-e khoD oonjaa nabaashe!
+		if ( theCord.getX() >= 0 && theCord.getX() < Board.SIZE && theCord.getY() >= 0 && theCord.getY() < Board.SIZE ) {
+//			System.out.println( board.getBlocks()[2][1].getMohre() );
+			Mohre currentMohre = board.getBlocks()[theCord.getY()][theCord.getX()].getMohre();
+			if ( currentMohre == null || currentMohre.getColor() != this.getColor() )
+				if ( !isKishImportant || ( isKishImportant && !this.aayaaKishMishim(board, mohre, theCord) ) )
+					cords.add(theCord);
+		}
 	}
 
-	public abstract ArrayList< Cord > getValidDests( Board board );
+	public Set < Cord > getHarifValidCords( Board board ) {
+		Set<Cord> harifValidCords = new HashSet<Cord>();
+		for (Block[] satr : board.getBlocks())
+			for (Block block : satr)
+				if ( block.getMohre() != null && block.getMohre().getColor() != this.getColor())
+					harifValidCords.addAll(block.getMohre().getValidDests(board,false));
+		return harifValidCords;
+	}
+
+	public abstract ArrayList< Cord > getValidDests( Board board, boolean isKishImportant );
 
 	public Image getTile() {
 		return new Image( Mohre.MOHRE_IMAGES_ADDRESS + this.toString() );
 	}
 
 	public Mohre(Color color, Cord cord) {
+	    this( color, cord, false );
+	}
+
+	public Mohre( Color color, Cord cord, boolean isMoved ) {
 		this.setColor( color );
 		this.setCord( cord );
-		this.setMoved( false );
+		this.setMoved( isMoved );
 	}
 
 	public Mohre() {
 
 	}
 
+/*	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return this.clone();
+	}*/
+
+	public abstract String label();
+	public abstract char symbol();
+
 	@Override
 	public String toString() {
-		return this.toString() + this.getColor().toString();
+		return this.label() + this.getColor().toString();
 	}
+
+	public abstract Mohre getCopy();
 
 	public Color getColor() {
 		return color;
