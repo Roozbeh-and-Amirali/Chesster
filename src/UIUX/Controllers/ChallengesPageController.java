@@ -1,5 +1,6 @@
 package UIUX.Controllers;
 
+import BasicClasses.ChallengeFilter;
 import ClientAndHandlerCommunication.Commands.JoinGameCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.DeleteChallengesCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
@@ -33,11 +34,15 @@ public class ChallengesPageController extends ParentController implements Initia
 	@FXML
 	 VBox challengesVBox;
 
+
+
     final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     private int i=0;
 
 
 	private List<Match> challenges=new ArrayList<>();
+
+	private ChallengeFilter filter;
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -262,6 +267,12 @@ public class ChallengesPageController extends ParentController implements Initia
 
 
 		}
+
+	}
+
+	public void createFilter(){
+		loadPage("CreateFilterPage");
+		scheduler.shutdown();
 
 	}
 

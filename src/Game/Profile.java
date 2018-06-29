@@ -1,6 +1,7 @@
 
 package Game;
 
+import BasicClasses.ChallengeFilter;
 import BasicClasses.Rating;
 import Game.ClockNiggas.Clocked;
 import javafx.geometry.Pos;
@@ -24,6 +25,8 @@ public class Profile implements Serializable {
     private String imageAddress;
     private Rating rating;
     private int challengesNumber; //number of challenges this user crated
+
+    private ChallengeFilter challengeFilter;
 
     private List<Match> requestedMatches=new ArrayList<>();
     private Match activeMatch;
@@ -132,5 +135,13 @@ public class Profile implements Serializable {
 
     public void setRequestedMatches(List<Match> requestedMatches) {
         this.requestedMatches = requestedMatches;
+    }
+
+    public ChallengeFilter getChallengeFilter() {
+        return challengeFilter;
+    }
+
+    public void setChallengeFilter(ChallengeFilter challengeFilter) {
+        this.challengeFilter = challengeFilter;
     }
 }

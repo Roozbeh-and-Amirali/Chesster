@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Rating implements Serializable {
 
 //	Defaut-e rating-e har kasi in meghdaare...
-	public static long DEFAULT_RATING = 1200;
+	public static final long DEFAULT_RATING = 1200;
 
 //	public static long calculateRating
 

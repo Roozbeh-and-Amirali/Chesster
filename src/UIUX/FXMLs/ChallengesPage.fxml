@@ -28,8 +28,9 @@
                   <Insets left="40.0" right="40.0" />
                </VBox.margin>
             </ScrollPane>
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="45.0">
                <children>
+                  <Button mnemonicParsing="false" onAction="#createFilter" text="Filter" />
                   <Button mnemonicParsing="false" onAction="#createNewChallenge" text="New Challenge">
                      <HBox.margin>
                         <Insets right="40.0" />
