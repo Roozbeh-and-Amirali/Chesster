@@ -2,17 +2,19 @@ package ClientAndHandlerCommunication.Responses.NewChallengeResponse;
 
 import ClientAndHandlerCommunication.Responses.Response;
 import Game.Match;
+import Game.Profile;
 
 import java.util.List;
+import java.util.Map;
 
 public class GetChallengesResponse implements Response {
-   private List<Match> challenges;
+   private Map<Match, Profile> challenges;
 
-    public List<Match> getChallenges() {
+    public Map<Match, Profile> getChallenges() {
         return challenges;
     }
 
-    public void setChallenges(List<Match> challenges) {
+    public void setChallenges(Map<Match, Profile> challenges) {
         this.challenges = challenges;
     }
 }

@@ -2,6 +2,11 @@
 package Game;
 
 import BasicClasses.Rating;
+import Game.ClockNiggas.Clocked;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,6 +46,24 @@ public class Profile implements Serializable {
     public boolean equals(Object obj) {
         return this.userName.equals(((Profile)obj).getUserName());
     }
+
+    public HBox getProfileTile() {
+        HBox proTile = new HBox();
+        Label proName=new Label(this.getUserName());
+        proName.setFont( new Font( 10) );
+        Label proRate=new Label(String.valueOf(this.getRating()));
+        proRate.setFont( new Font( 10 ) );
+
+
+
+
+        proTile.getChildren().addAll(proName,proRate);
+        proTile.setSpacing(30);
+
+        proTile.setAlignment(Pos.CENTER);
+        return proTile;
+    }
+
 
     @Override
     public String toString() {

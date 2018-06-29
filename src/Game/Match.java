@@ -71,6 +71,18 @@ public class Match implements Runnable,Serializable {
 
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		Match temp=(Match)obj;
+
+		return (temp.getHostProfile().equals(this.hostProfile) && temp.getClock().toString().equals(this.getClock().toString()) && this.ratability.toString().equals(temp.ratability.toString()));
+	}
+
+	@Override
+	public int hashCode() {
+		String cordString=this.clock.toString()+this.ratability.toString()+this.getHostProfile().getUserName();
+		return cordString.hashCode();
+	}
 
 	public List<Profile> getAudience() {
 		return audience;

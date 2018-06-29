@@ -3,8 +3,13 @@ package UIUX.Controllers;
 import ClientAndHandlerCommunication.Commands.JoinGameCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.DeleteChallengesCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
+import ClientAndHandlerCommunication.Responses.JoinedGameResponse;
 import ClientAndHandlerCommunication.Responses.NewChallengeResponse.GetChallengesResponse;
+import ClientAndHandlerCommunication.Responses.Response;
+import Enums.JoinerType;
+import Game.ClockNiggas.Clock;
 import Game.Match;
+import Game.Profile;
 import NetworkShit.ClientSide.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -16,11 +21,9 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -30,11 +33,15 @@ public class ChallengesPageController extends ParentController implements Initia
 	@FXML
 	 VBox challengesVBox;
 
+    final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
+    private int i=0;
+
 
 	private List<Match> challenges=new ArrayList<>();
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("AAAAAYYY MELLLAT MAAAAAN "+Client.getProfile());
 /*		Service<Void> service = new Service<Void>() {
 			@Override
 			protected Task<Void> createTask() {
@@ -112,7 +119,6 @@ public class ChallengesPageController extends ParentController implements Initia
             }
         };
         new Thread( task ).start();*/
-        final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
         scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
@@ -121,6 +127,7 @@ public class ChallengesPageController extends ParentController implements Initia
                         @Override
                         public void run() {
                             try {
+
                                 Client.userOut.writeObject(new GetChallengesCommand());
                                 GetChallengesResponse response = (GetChallengesResponse) Client.userIn.readObject();
                                 createHbox(response.getChallenges());
@@ -132,24 +139,30 @@ public class ChallengesPageController extends ParentController implements Initia
                 //}
             }
         }, 1, 500, TimeUnit.MILLISECONDS );
+
         //System.out.println( "Thread started!" );
 	}
 
 	public void createNewChallenge(){
+	    scheduler.shutdown();
 		this.loadPage("NewChallengePage");
 
 	}
 
 	public void backToMenu(){
+	    scheduler.shutdown();
 		this.loadPage("MainMenu");
+
 	}
 
-	public  void createHbox(List<Match> challenges){
+	public  void createHbox(Map<Match, Profile> challenges){
 
 	    challengesVBox.getChildren().clear();
 
-		for (Match match: challenges) {
+		for (Match match: challenges.keySet()) {
 			HBox matchBox=match.getMatchTile();
+			if (match.getGuestProfile()!=null)
+			    matchBox.setStyle("-fx-background-color: green;");
 			matchBox.setStyle("-fx-border-style: solid inside ;" + "-fx-border-width: 2px;"+"-fx-border-color: black;");
 			matchBox.setOnMouseEntered((event1)-> {
 				matchBox.setEffect(new DropShadow());
@@ -177,16 +190,48 @@ public class ChallengesPageController extends ParentController implements Initia
 			ButtonType asContestandButton = new ButtonType("Contestant");
 			ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
+
+
 			alert.getButtonTypes().setAll(asAudienceButton, asContestandButton,cancel);
+
+            if (match.getGuestProfile()!=null) {
+                alert.getButtonTypes().remove(asContestandButton);
+                System.out.println("removing button");
+            }
 			Optional<ButtonType> as = alert.showAndWait();
+
 			if (as.get().equals(asAudienceButton)) {
-				System.out.println("asAudience");
+			    Client.getProfile().setActiveMatch(match);
+			    match.getAudience().add(Client.getProfile());
+			    //if (match.getGuestProfile()!=null)
+                    this.sendjoinGameCommand(new JoinGameCommand(match,Client.getProfile(), JoinerType.AUDIENCE));
+                try {
+                    JoinedGameResponse joinedGameResponse=(JoinedGameResponse) Client.joinGameIn.readObject();
+                    Client.getProfile().setActiveMatch(joinedGameResponse.getMatch());
+                } catch (IOException|ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches()),null));
+                scheduler.shutdown();
+
+                loadPage("GameRoomPage");
 			} else if (as.get().equals(asContestandButton)) {
-				this.sendjoinGameCommand(new JoinGameCommand(match));
+
 				Client.getProfile().setActiveMatch(match);
-				System.out.println(Client.getProfile().getRequestedMatches());
-				this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches())));
-				loadPage("GameRoomPage");
+                match.setGuestProfile(Client.getProfile());
+                this.sendjoinGameCommand(new JoinGameCommand(match,Client.getProfile(), JoinerType.GUEST));
+                try {
+                    JoinedGameResponse joinedGameResponse=(JoinedGameResponse) Client.joinGameIn.readObject();
+                    Client.getProfile().setActiveMatch(joinedGameResponse.getMatch());
+                } catch (IOException|ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                //System.out.println(Client.getProfile().getRequestedMatches());
+				this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches()),null));
+
+				scheduler.shutdown();
+
+                loadPage("GameRoomPage");
 
 
 			} else {
@@ -207,8 +252,12 @@ public class ChallengesPageController extends ParentController implements Initia
 			Optional<ButtonType> as = alert.showAndWait();
 			if (as.get().equals(view)){
 				Client.getProfile().setActiveMatch(match);
+				scheduler.shutdown();
 				loadPage("GameRoomPage");
 			}
+			else {
+
+            }
 
 
 
