@@ -2,6 +2,7 @@ package UIUX.Controllers;
 
 import BasicClasses.Time;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.CreateMatchCommand;
+import Enums.Color;
 import Exceptions.IllegalTimeInput;
 import Game.ClockNiggas.Clock;
 import Game.ClockNiggas.Clockability;
@@ -42,6 +43,10 @@ public class NewChallengePageController extends ParentController implements Init
     TextField seconds;
     @FXML
     Label clockWarning;
+    @FXML
+    RadioButton whiteRadio;
+    @FXML
+    RadioButton blackRadio;
 
     private   Thread jointhread=null;
     private WaitForContestant waitForContestant =null;
@@ -63,6 +68,11 @@ public class NewChallengePageController extends ParentController implements Init
         clockedRadio.setToggleGroup(clockRadio);
         unClockedRadio.setToggleGroup(clockRadio);
         clockedRadio.setSelected(true);
+
+        ToggleGroup colorRadio = new ToggleGroup();
+        whiteRadio.setToggleGroup(colorRadio);
+        blackRadio.setToggleGroup(colorRadio);
+        whiteRadio.setSelected(true);
 
 
     }
@@ -97,6 +107,15 @@ public class NewChallengePageController extends ParentController implements Init
                 gameClockability = new Clocked();
             else
                 gameClockability = new UnClocked();
+
+            if (whiteRadio.isSelected()){
+                match.setHostColor(Color.WHITE);
+                match.setGuestColor(Color.BLACK);
+            }
+            else{
+                match.setHostColor(Color.BLACK);
+                match.setGuestColor(Color.WHITE);
+            }
 
 
             match.setClock(matchclock);

@@ -54,7 +54,16 @@
             <Insets left="40.0" />
          </padding>
       </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0" />
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="82.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label prefHeight="16.0" prefWidth="89.0" text="Color" />
+            <RadioButton fx:id="blackRadio" mnemonicParsing="false" onAction="#disableClock" prefHeight="18.0" prefWidth="85.0" text="Black" />
+            <RadioButton fx:id="whiteRadio" mnemonicParsing="false" onAction="#enableClock" prefHeight="17.0" prefWidth="110.0" text="White" />
+         </children>
+         <padding>
+            <Insets left="40.0" />
+         </padding>
+      </HBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
          <children>
             <Button mnemonicParsing="false" onAction="#createChallenge" text="Create" />
