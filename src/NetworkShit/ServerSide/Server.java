@@ -35,6 +35,7 @@ public class Server {
 //	Ye map dREm az profileHaa be userHandlerHaa
 	public static Map<Profile, UserHandler> userHandlers = new ConcurrentHashMap<Profile, UserHandler>();
 	public static Map<UserHandler, JoinGameHandler> joinGameHandlers = new ConcurrentHashMap<>();
+	public static Map<UserHandler, ChatHandler> chatHandlers = new ConcurrentHashMap<>();
 
 	public static void main(String[] args) {
 
@@ -81,6 +82,7 @@ public class Server {
 				System.out.println( "waiting for the clients chatsocket" );
 				currentChatSocket=chatSocket.accept();
 				ChatHandler chatHandler=new ChatHandler(currentChatSocket);
+				chatHandlers.put(userHandler,chatHandler);
 				System.out.println("waiting for the clients joinsocket");
 				currentJoinSocket=joinSocket.accept();
 				JoinGameHandler joinGameHandler=new JoinGameHandler(currentJoinSocket);

@@ -1,6 +1,9 @@
 package UIUX.Controllers;
 
+import ClientAndHandlerCommunication.Commands.RecieveChatCommand;
+import ClientAndHandlerCommunication.Commands.SendChatCommand;
 import ClientAndHandlerCommunication.Responses.JoinedGameResponse;
+import Enums.ChatChannelType;
 import Enums.JoinerType;
 import Game.Match;
 import Game.Profile;
@@ -8,23 +11,39 @@ import NetworkShit.ClientSide.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class GameRoomController implements Initializable {
+public class GameRoomController extends ParentController implements Initializable  {
     @FXML
-    TextField chatBox;
+    TextField chatInput;
     @FXML
     Label hostLabel;
     @FXML
     Label guestLabel;
     @FXML
     VBox audienceBox;
+
+    @FXML
+    RadioButton rivalSelect;
+    @FXML
+    RadioButton audienceSelect;
+    @FXML
+    VBox audienceChatBox;
+    @FXML
+    VBox rivalChatBox;
+    @FXML
+    ScrollPane aPane;
+    @FXML
+    ScrollPane rPane;
 
     private Match match;
     private Profile host;
@@ -33,6 +52,10 @@ public class GameRoomController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        ToggleGroup chatRadio = new ToggleGroup();
+        rivalSelect.setToggleGroup(chatRadio);
+        audienceSelect.setToggleGroup(chatRadio);
+        rivalSelect.setSelected(true);
         this.match = Client.getProfile().getActiveMatch();
         this.host = match.getHostProfile();
         this.hostLabel.setText(host.getUserName());
@@ -74,20 +97,42 @@ public class GameRoomController implements Initializable {
 
         }*/
 
+
         for (Profile audience : match.getAudience()) {
 
             if (!Client.getProfile().equals(audience))
                 audienceBox.getChildren().add(audience.getProfileTile());
+            else {
+                audienceSelect.setSelected(true);
+                rivalSelect.setDisable(true);
+                rPane.setVisible(false);
+                aPane.setVisible(true);
+            }
 
         }
+
+
         Thread waiter = new Thread(waitForPlayers());
 
         waiter.start();
+
+        Thread chatReciever = new Thread(waitForChat());
+        chatReciever.start();
 
 
     }
 
     public void sendMsg() {
+
+        if (rivalSelect.isSelected()) {
+            this.sendChatCommand(new SendChatCommand(chatInput.getText(),match,ChatChannelType.RIVAL_CHANNEL,Client.getProfile().getUserName()));
+            chatInput.clear();
+        }
+        else {
+
+            this.sendChatCommand(new SendChatCommand(chatInput.getText(),match,ChatChannelType.AUDIENCES_CHANNEL,Client.getProfile().getUserName()));
+            chatInput.clear();
+        }
 
 
     }
@@ -143,6 +188,88 @@ public class GameRoomController implements Initializable {
             }
         };
         return runnable;
+    }
+
+    private Runnable waitForChat() {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    synchronized (Client.chatIn) {
+                        try {
+                            System.out.println("Waiting for chat");
+                            RecieveChatCommand recieve=(RecieveChatCommand) Client.chatIn.readObject();
+                           // HBox box = getChatTile(recieve.getMsg(), recieve.getSender());
+                            if (recieve.getChannelType()== ChatChannelType.AUDIENCES_CHANNEL) {
+
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+
+
+                                        //chatBox.getChildren().addAll( new Label(recieve.getSender()+": "+recieve.getMsg()));
+                                        audienceChatBox.getChildren().addAll(new Label(recieve.getSender()+": "+recieve.getMsg()));
+                                    }
+                                });
+                            }
+                            else {
+
+                                Platform.runLater(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //System.out.println(box.getChildren());
+                                       // chatBox.getChildren().addAll(new Label(recieve.getSender()+": "+recieve.getMsg()));
+                                        rivalChatBox.getChildren().addAll(new Label(recieve.getSender()+": "+recieve.getMsg()));
+                                    }
+                                });
+
+
+
+                            }
+                        }catch (IOException|ClassNotFoundException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            }
+        };
+        return runnable;
+
+    }
+
+    private HBox getChatTile(String msg, String sender) {
+        System.out.println(msg+sender);
+        HBox chatTile = new HBox();
+
+        Label senderLabel = new Label(sender + ": ");
+        Label msgLabel = new Label(msg);
+        HBox.setHgrow(msgLabel, Priority.ALWAYS);
+        HBox.setHgrow(senderLabel, Priority.ALWAYS);
+        senderLabel.setFont(new Font(15));
+        msgLabel.setFont(new Font(15));
+        //senderLabel.setStyle("-fx-color-label-visible: red;");
+        //msgLabel.setStyle("-fx-color-label-visible: red;");
+        chatTile.setStyle("-fx-border-style: solid inside ;" + "-fx-border-width: 2px;"+"-fx-border-color: black;");
+        chatTile.setAlignment(Pos.CENTER_LEFT);
+       // chatTile.setSpacing(15);
+
+        chatTile.getChildren().addAll(senderLabel, msgLabel);
+
+        return chatTile;
+    }
+
+    public void loadRivalChat(){
+        rPane.setVisible(true);
+
+        aPane.setVisible(false);
+    }
+    public void loadAudienceChat(){
+
+        aPane.setVisible(true);
+
+        rPane.setVisible(false);
     }
 
 

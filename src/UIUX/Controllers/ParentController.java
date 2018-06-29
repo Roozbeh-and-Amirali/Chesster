@@ -2,6 +2,7 @@ package UIUX.Controllers;
 
 import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.ParentCommands.UsernameExistenceCommand;
+import ClientAndHandlerCommunication.Commands.SendChatCommand;
 import ClientAndHandlerCommunication.Responses.ParentResponds.UsernameExistenceRespond;
 import ClientAndHandlerCommunication.Responses.Response;
 import NetworkShit.ClientSide.Client;
@@ -50,10 +51,10 @@ public class ParentController {
 		return response;
 	}
 
-	public void sendChatCommand(Command command){
+	public void sendChatCommand(SendChatCommand sendChatCommand){
 
 		try {
-			Client.chatOut.writeObject(command);
+			Client.chatOut.writeObject(sendChatCommand);
 		}catch (IOException e){
 			e.printStackTrace();
 		}

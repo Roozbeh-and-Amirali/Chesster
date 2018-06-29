@@ -55,7 +55,6 @@ public class JoinGameHandler implements Runnable {
             if (e instanceof EOFException){
                 System.out.println("join socket disconnected.");
             }
-
         }
 
     }
