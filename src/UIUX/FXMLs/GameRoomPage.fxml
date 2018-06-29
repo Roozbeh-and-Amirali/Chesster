@@ -46,12 +46,13 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0">
                      <children>
-                        <Label text="Black">
+                        <Label fx:id="hostLabel" text="host">
                            <font>
                               <Font size="19.0" />
                            </font>
                         </Label>
-                        <Label text="White">
+                        <Label text="vs" />
+                        <Label fx:id="guestLabel" text="guest">
                            <font>
                               <Font size="19.0" />
                            </font>
@@ -85,7 +86,7 @@
                   </ScrollPane>
                   <ScrollPane prefHeight="247.0" prefWidth="192.0">
                      <content>
-                        <VBox prefWidth="172.0" />
+                        <VBox fx:id="audienceBox" prefWidth="172.0" />
                      </content>
                   </ScrollPane>
                </children>

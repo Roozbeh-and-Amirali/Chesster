@@ -1,12 +1,7 @@
 package UIUX.Controllers;
 
 import BasicClasses.Time;
-import ClientAndHandlerCommunication.Commands.FirstPageCommands.GetProfileCommand;
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.CreateMatchCommand;
-import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
-import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResponse;
-import ClientAndHandlerCommunication.Responses.JoinedGameResponse;
-import ClientAndHandlerCommunication.Responses.NewChallengeResponse.GetChallengesResponse;
 import Exceptions.IllegalTimeInput;
 import Game.ClockNiggas.Clock;
 import Game.ClockNiggas.Clockability;
@@ -18,8 +13,7 @@ import Game.RateNiggas.Ratability;
 import Game.RateNiggas.Rated;
 import Game.RateNiggas.UnRated;
 import NetworkShit.ClientSide.Client;
-import NetworkShit.ClientSide.WaitForJoiners;
-import javafx.application.Platform;
+import NetworkShit.ClientSide.WaitForContestant;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -28,12 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class NewChallengePageController extends ParentController implements Initializable {
     @FXML
@@ -53,8 +43,8 @@ public class NewChallengePageController extends ParentController implements Init
     @FXML
     Label clockWarning;
 
-    private Thread jointhread=null;
-    private WaitForJoiners waitForJoiners=null;
+    private   Thread jointhread=null;
+    private WaitForContestant waitForContestant =null;
 
 
     public void goBack() {
@@ -120,11 +110,10 @@ public class NewChallengePageController extends ParentController implements Init
             myProfile.getRequestedMatches().add(match);
 
             if (jointhread==null){
-                waitForJoiners=new WaitForJoiners();
-                jointhread=new Thread(waitForJoiners);
+                waitForContestant =new WaitForContestant();
+                jointhread=new Thread(waitForContestant);
                 jointhread.start();
             }
-            waitForJoiners.getMatches().add(match);
             /*Runnable runnable=new Runnable() {
                 @Override
                 public void run() {
@@ -171,11 +160,11 @@ public class NewChallengePageController extends ParentController implements Init
                     //}
                 }
             }, 1, 500, TimeUnit.MILLISECONDS );*/
-            System.out.println("saddaaaada");
+            //System.out.println("saddaaaada");
             loadPage("ChallengesPage");
 
         } catch (Exception e) {
-            // e.printStackTrace();
+            e.printStackTrace();
             clockWarning.setText(new IllegalTimeInput().toString());
         }
 

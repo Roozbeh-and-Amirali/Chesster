@@ -3,13 +3,19 @@ package NetworkShit.ClientSide;
 import Enums.Ports;
 import Game.Profile;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Optional;
 
 public class Client extends Application {
 
@@ -77,6 +83,12 @@ public class Client extends Application {
 		}
 		Client.pStage.setTitle( "Main Menu" );
 		Client.pStage.setScene( new Scene( root, 1280, 720 ) );
+		Client.pStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+			@Override
+			public void handle(WindowEvent event) {
+				createExitAlert(event);
+			}
+		});
 		Client.pStage.show();
 	}
 
@@ -86,6 +98,33 @@ public class Client extends Application {
 
 	public static void setProfile(Profile profile) {
 		Client.profile = profile;
+	}
+
+	public void createExitAlert(WindowEvent event){
+
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("Exit Application");
+		alert.setHeaderText("Are you sure you want to Exit the program? ");
+		alert.setContentText("you will lose current running tournoments and challenges");
+
+		ButtonType yes = new ButtonType("yes");
+		ButtonType no = new ButtonType("no", ButtonBar.ButtonData.CANCEL_CLOSE);
+
+
+
+		alert.getButtonTypes().setAll(yes, no);
+
+
+		Optional<ButtonType> as = alert.showAndWait();
+
+		if (as.get().equals(yes)) {
+			Client.pStage.close();
+			System.exit(0);
+		}
+		else {
+			event.consume();
+
+		}
 	}
 
 }

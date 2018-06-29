@@ -15,6 +15,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /*
@@ -30,12 +31,30 @@ public class Server {
 //	public static List<Profile> profiles = Collections.synchronizedList( new ArrayList<Profile>() );
 	public static Map<String, Profile> profiles = new ConcurrentHashMap<String, Profile>();
 // challenge haaE ke ta alan saakhte shodan
-	public static List<Match> challenges=new ArrayList<>();
+	public static Map<Match,Profile> challenges=new ConcurrentHashMap<>();
 //	Ye map dREm az profileHaa be userHandlerHaa
 	public static Map<Profile, UserHandler> userHandlers = new ConcurrentHashMap<Profile, UserHandler>();
 	public static Map<UserHandler, JoinGameHandler> joinGameHandlers = new ConcurrentHashMap<>();
 
 	public static void main(String[] args) {
+
+		Profile p1=new Profile();
+		p1.setUserName("a");
+		p1.setName("a");
+		p1.setPassword("a");
+		profiles.put(p1.getUserName(),p1);
+
+		Profile p2=new Profile();
+		p2.setUserName("q");
+		p2.setName("q");
+		p2.setPassword("q");
+		profiles.put(p2.getUserName(),p2);
+
+		Profile p3=new Profile();
+		p3.setUserName("r");
+		p3.setName("r");
+		p3.setPassword("r");
+		profiles.put(p3.getUserName(),p3);
 
 		ServerSocket userSocket = null;
 		ServerSocket chatSocket=null;
