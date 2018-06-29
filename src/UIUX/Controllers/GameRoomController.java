@@ -1,7 +1,10 @@
 package UIUX.Controllers;
 
+import ChessGame.Board;
+import ChessGame.ChizaayeMohrehaa.Mohre;
 import ClientAndHandlerCommunication.Commands.RecieveChatCommand;
 import ClientAndHandlerCommunication.Commands.SendChatCommand;
+import ClientAndHandlerCommunication.Commands.madeAMoveCommand;
 import ClientAndHandlerCommunication.Responses.JoinedGameResponse;
 import Enums.ChatChannelType;
 import Enums.JoinerType;
@@ -13,6 +16,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -44,11 +50,12 @@ public class GameRoomController extends ParentController implements Initializabl
     ScrollPane aPane;
     @FXML
     ScrollPane rPane;
+    @FXML
+    GridPane boardPane;
 
     private Match match;
     private Profile host;
     private Profile guest;
-
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -59,6 +66,7 @@ public class GameRoomController extends ParentController implements Initializabl
         this.match = Client.getProfile().getActiveMatch();
         this.host = match.getHostProfile();
         this.hostLabel.setText(host.getUserName());
+        this.updateGridPane( this.match.getBoard() );
         if (match.getGuestProfile() != null) {
 
             //if you are the host and guest has already joined
@@ -139,6 +147,33 @@ public class GameRoomController extends ParentController implements Initializabl
 
     public void exitRoom() {
 
+
+    }
+
+    private Runnable waitForChessMoves() {
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                while ( true ) {
+                    try {
+                        madeAMoveCommand command = (madeAMoveCommand) Client.gameIn.readObject();
+                        match.setBoard( command.getBoard() );
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                updateGridPane( command.getBoard() );
+                            }
+                        });
+                    } catch (IOException|ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        };
+
+        return runnable;
 
     }
 
@@ -238,6 +273,13 @@ public class GameRoomController extends ParentController implements Initializabl
         return runnable;
 
     }
+
+    private void updateGridPane( Board board ) {
+        for ( int i = 0; i < Board.SIZE * Board.SIZE; i++ ) {
+            ( (ImageView) boardPane.getChildren().get( i ) ).setImage( new Image( Mohre.MOHRE_IMAGES_ADDRESS + board.getBlocks()[ i / Board.SIZE ][ i % Board.SIZE ].getMohre().toString() ) );
+        }
+    }
+
 
     private HBox getChatTile(String msg, String sender) {
         System.out.println(msg+sender);

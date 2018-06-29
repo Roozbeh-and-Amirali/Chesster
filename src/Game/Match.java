@@ -1,5 +1,7 @@
 package Game;
 
+import ChessGame.Board;
+import Enums.Color;
 import Game.ClockNiggas.Clock;
 import Game.ClockNiggas.Clockability;
 import Game.ClockNiggas.Clocked;
@@ -33,12 +35,18 @@ public class Match implements Runnable,Serializable {
 	private Clock clock;
 	//	Har baaZ do ta player daare, kasi ke baaZ ro sakhte va kasi ke join shode!
 	private Profile hostProfile, guestProfile;
+	private Color hostColor, guestColor;
+
+//	Board-e baaZmoon
+	private Board board;
 
 	public Match() {
+		board = new Board( false );
 	}
 
 	public Match(Profile hostProfile) {
 		this.hostProfile = hostProfile;
+		board = new Board( true );
 	}
 
 	//	Ettelaa'aat-e baaZ ro be soorat-e ye HBox barmigardoone
@@ -133,4 +141,29 @@ public class Match implements Runnable,Serializable {
 	public Clock getClock() {
 		return clock;
 	}
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+	public Color getHostColor() {
+		return hostColor;
+	}
+
+	public void setHostColor(Color hostColor) {
+		this.hostColor = hostColor;
+	}
+
+	public Color getGuestColor() {
+		return guestColor;
+	}
+
+	public void setGuestColor(Color guestColor) {
+		this.guestColor = guestColor;
+	}
+
 }

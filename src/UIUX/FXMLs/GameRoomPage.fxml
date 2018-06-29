@@ -136,7 +136,7 @@
                         <Image url="@../../Assets/Chess/chessboard.jpg" />
                      </image>
                   </ImageView>
-                  <GridPane style="-fx-border-width: 1; -fx-border-color: black;">
+                  <GridPane fx:id="boardPane" style="-fx-border-width: 1; -fx-border-color: black;">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

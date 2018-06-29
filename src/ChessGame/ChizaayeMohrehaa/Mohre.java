@@ -14,7 +14,7 @@ import java.util.Set;
 
 public abstract class Mohre {
 
-	private static String MOHRE_IMAGES_ADDRESS = "/Assets/Chess/Mohre/";
+	public final static String MOHRE_IMAGES_ADDRESS = "/Assets/Chess/Mohre/";
 
 //	private static Map< String, ImageView>;
 
