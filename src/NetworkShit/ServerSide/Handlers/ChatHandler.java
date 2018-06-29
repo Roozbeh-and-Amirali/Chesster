@@ -75,16 +75,25 @@ public class ChatHandler implements Runnable {
                         targetHandler.oos.writeObject(new RecieveChatCommand(chatCommand.getMsg(), chatCommand.getSender(),ChatChannelType.AUDIENCES_CHANNEL));
                     }
                 }
-            }
-            else {
                 if (chatCommand.getSender().equals(chatCommand.getMatch().getHostProfile().getUserName())) {
-                    ChatHandler targetHandler = Server.chatHandlers.get(Server.userHandlers.get(chatCommand.getMatch().getGuestProfile()));
-                    targetHandler.oos.writeObject(new RecieveChatCommand(chatCommand.getMsg(), chatCommand.getSender(),ChatChannelType.RIVAL_CHANNEL));
+                    ChatHandler targetHandler = Server.chatHandlers.get(Server.userHandlers.get(chatCommand.getMatch().getHostProfile()));
+                    targetHandler.oos.writeObject(new RecieveChatCommand(chatCommand.getMsg(), chatCommand.getSender(), ChatChannelType.AUDIENCES_CHANNEL));
                 }
                 else {
-                    ChatHandler targetHandler = Server.chatHandlers.get(Server.userHandlers.get(chatCommand.getMatch().getHostProfile()));
-                    targetHandler.oos.writeObject(new RecieveChatCommand(chatCommand.getMsg(), chatCommand.getSender(),ChatChannelType.RIVAL_CHANNEL));
+                        ChatHandler targetHandler = Server.chatHandlers.get(Server.userHandlers.get(chatCommand.getMatch().getGuestProfile()));
+                        targetHandler.oos.writeObject(new RecieveChatCommand(chatCommand.getMsg(), chatCommand.getSender(),ChatChannelType.AUDIENCES_CHANNEL));
                 }
+
+            }
+            else {
+                //if (chatCommand.getSender().equals(chatCommand.getMatch().getHostProfile().getUserName())) {
+                    ChatHandler targetHandler = Server.chatHandlers.get(Server.userHandlers.get(chatCommand.getMatch().getGuestProfile()));
+                    targetHandler.oos.writeObject(new RecieveChatCommand(chatCommand.getMsg(), chatCommand.getSender(),ChatChannelType.RIVAL_CHANNEL));
+                //}
+                //else {
+                    ChatHandler targetHandler1 = Server.chatHandlers.get(Server.userHandlers.get(chatCommand.getMatch().getHostProfile()));
+                    targetHandler1.oos.writeObject(new RecieveChatCommand(chatCommand.getMsg(), chatCommand.getSender(),ChatChannelType.RIVAL_CHANNEL));
+                //}
             }
 
     }
