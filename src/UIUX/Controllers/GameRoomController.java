@@ -121,7 +121,6 @@ public class GameRoomController extends ParentController implements Initializabl
 
 
         Thread waiter = new Thread(waitForPlayers());
-
         waiter.start();
 
         Thread chatReciever = new Thread(waitForChat());
