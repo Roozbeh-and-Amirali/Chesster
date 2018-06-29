@@ -8,11 +8,12 @@ import Enums.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Mohre {
+public abstract class Mohre implements Serializable {
 
 	public final static String MOHRE_IMAGES_ADDRESS = "/Assets/Chess/Mohre/";
 

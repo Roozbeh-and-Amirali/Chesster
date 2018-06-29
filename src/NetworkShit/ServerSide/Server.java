@@ -36,6 +36,7 @@ public class Server {
 	public static Map<Profile, UserHandler> userHandlers = new ConcurrentHashMap<Profile, UserHandler>();
 	public static Map<UserHandler, JoinGameHandler> joinGameHandlers = new ConcurrentHashMap<>();
 	public static Map<UserHandler, ChatHandler> chatHandlers = new ConcurrentHashMap<>();
+	public static Map<UserHandler, GameHandler> gameHandlers = new ConcurrentHashMap<>();
 
 	public static void main(String[] args) {
 
@@ -90,6 +91,7 @@ public class Server {
 				System.out.println("waiting for the clients gamesocket");
 				currentGameSocket=gameSocket.accept();
 				GameHandler gameHandler=new GameHandler(currentGameSocket);
+				gameHandlers.put( userHandler, gameHandler );
 				System.out.println("got all the sockets nigga");
 
 

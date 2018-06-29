@@ -109,6 +109,8 @@ public class NewChallengePageController extends ParentController implements Init
                 gameClockability = new UnClocked();
 
             if (whiteRadio.isSelected()){
+                match.setHostProfile( Client.getProfile() );
+                match.setCurrentPlayer( match.getHostProfile() );
                 match.setHostColor(Color.WHITE);
                 match.setGuestColor(Color.BLACK);
             }
@@ -116,7 +118,6 @@ public class NewChallengePageController extends ParentController implements Init
                 match.setHostColor(Color.BLACK);
                 match.setGuestColor(Color.WHITE);
             }
-
 
             match.setClock(matchclock);
             match.setClockability(gameClockability);

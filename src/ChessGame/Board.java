@@ -5,7 +5,9 @@ import ChessGame.ChizaayeMohrehaa.Mohre;
 import ChessGame.ChizaayeMohrehaa.SpecificMohre.*;
 import Enums.Color;
 
-public class Board {
+import java.io.Serializable;
+
+public class Board implements Serializable {
 
 	public static final int SIZE = 8;
 

@@ -170,7 +170,17 @@
                               </Lighting>
                            </effect>
                         </ImageView>
-                        <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
+                        <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                           <effect>
+                              <Lighting>
+                                 <bumpInput>
+                                    <Shadow />
+                                 </bumpInput>
+                                 <light>
+                                    <Light.Distant />
+                                 </light>
+                              </Lighting>
+                           </effect></ImageView>
                         <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                            <effect>
                               <Lighting>

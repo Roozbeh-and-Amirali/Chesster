@@ -36,6 +36,8 @@ public class Match implements Runnable,Serializable {
 	//	Har baaZ do ta player daare, kasi ke baaZ ro sakhte va kasi ke join shode!
 	private Profile hostProfile, guestProfile;
 	private Color hostColor, guestColor;
+	private Profile currentPlayer;
+	private Color currentColor;
 
 //	Board-e baaZmoon
 	private Board board;
@@ -47,6 +49,10 @@ public class Match implements Runnable,Serializable {
 	public Match(Profile hostProfile) {
 		this.hostProfile = hostProfile;
 		board = new Board( true );
+		if ( this.getHostColor() == Color.WHITE )
+			this.setCurrentPlayer( this.getHostProfile() );
+		else this.setCurrentPlayer( this.getGuestProfile() );
+		this.setCurrentColor( Color.WHITE );
 	}
 
 	//	Ettelaa'aat-e baaZ ro be soorat-e ye HBox barmigardoone
@@ -124,8 +130,6 @@ public class Match implements Runnable,Serializable {
 		this.ratability = ratability;
 	}
 
-
-
 	public Clockability getClockability() {
 		return clockability;
 	}
@@ -164,6 +168,32 @@ public class Match implements Runnable,Serializable {
 
 	public void setGuestColor(Color guestColor) {
 		this.guestColor = guestColor;
+	}
+
+	public Profile getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(Profile currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public void changeCurrentPlayer() {
+		System.out.print( "Changing current player... currentPlayer: " + this.getCurrentPlayer() );
+		this.setCurrentPlayer( this.getCurrentPlayer().equals( this.getHostProfile() ) ? this.getGuestProfile() : this.getHostProfile() );
+		System.out.println( " and it becomes " + this.getCurrentPlayer() );
+	}
+
+	public Color getCurrentColor() {
+		return currentColor;
+	}
+
+	public void setCurrentColor(Color currentColor) {
+		this.currentColor = currentColor;
+	}
+
+	public void changeCurrentColor() {
+		this.setCurrentColor( this.getCurrentColor() == Color.BLACK ? Color.WHITE : Color.BLACK );
 	}
 
 }

@@ -2,7 +2,9 @@ package ChessGame;
 
 import ChessGame.ChizaayeMohrehaa.Mohre;
 
-public class Block {
+import java.io.Serializable;
+
+public class Block implements Serializable{
 
 	private Mohre mohre;    //MohreE ke tooshe!
 
