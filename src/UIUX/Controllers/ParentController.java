@@ -5,7 +5,7 @@ import ClientAndHandlerCommunication.Commands.ParentCommands.UsernameExistenceCo
 import ClientAndHandlerCommunication.Commands.SendChatCommand;
 import ClientAndHandlerCommunication.Responses.ParentResponds.UsernameExistenceRespond;
 import ClientAndHandlerCommunication.Responses.Response;
-import NetworkShit.ClientSide.Client;
+import NetworkStuff.ClientSide.Client;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

@@ -10,7 +10,7 @@ import ClientAndHandlerCommunication.Responses.FirstPageResponses.GetProfileResp
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.LoginIsValidResponse;
 import ClientAndHandlerCommunication.Responses.FirstPageResponses.ProfileCreationResponse;
 import Game.Profile;
-import NetworkShit.ClientSide.Client;
+import NetworkStuff.ClientSide.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.PasswordField;

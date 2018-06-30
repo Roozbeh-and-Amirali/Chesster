@@ -12,7 +12,7 @@ import Enums.Color;
 import Enums.JoinerType;
 import Game.Match;
 import Game.Profile;
-import NetworkShit.ClientSide.Client;
+import NetworkStuff.ClientSide.Client;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;

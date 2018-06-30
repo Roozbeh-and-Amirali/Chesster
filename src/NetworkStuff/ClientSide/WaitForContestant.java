@@ -1,15 +1,13 @@
-package NetworkShit.ClientSide;
+package NetworkStuff.ClientSide;
 
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.DeleteChallengesCommand;
 import ClientAndHandlerCommunication.Responses.JoinedGameResponse;
 import Enums.JoinerType;
-import Game.Match;
 import UIUX.Controllers.ParentController;
 import javafx.application.Platform;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WaitForContestant extends ParentController implements Runnable {
 

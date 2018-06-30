@@ -1,6 +1,6 @@
 package UIUX.Controllers;
 
-import NetworkShit.ClientSide.Client;
+import NetworkStuff.ClientSide.Client;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

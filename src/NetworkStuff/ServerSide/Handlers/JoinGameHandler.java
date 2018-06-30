@@ -1,4 +1,4 @@
-package NetworkShit.ServerSide.Handlers;
+package NetworkStuff.ServerSide.Handlers;
 
 import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.JoinGameCommand;
@@ -7,15 +7,14 @@ import ClientAndHandlerCommunication.Responses.Response;
 import Enums.JoinerType;
 import Game.Match;
 import Game.Profile;
-import NetworkShit.ServerSide.Log.ServerLogWriter;
-import NetworkShit.ServerSide.Server;
+import NetworkStuff.ServerSide.Log.ServerLogWriter;
+import NetworkStuff.ServerSide.Server;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.Collections;
 
 public class JoinGameHandler implements Runnable {
 

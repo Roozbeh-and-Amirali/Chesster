@@ -1,8 +1,7 @@
-package NetworkShit.ServerSide.SemiDataBase;
+package NetworkStuff.ServerSide.SemiDataBase;
 
-import NetworkShit.ServerSide.Server;
+import NetworkStuff.ServerSide.Server;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;

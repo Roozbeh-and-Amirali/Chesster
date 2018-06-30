@@ -1,9 +1,8 @@
-package NetworkShit.ServerSide.SemiDataBase;
+package NetworkStuff.ServerSide.SemiDataBase;
 
 import Game.Profile;
-import NetworkShit.ServerSide.Handlers.UserHandler;
-import NetworkShit.ServerSide.Log.ServerLogWriter;
-import NetworkShit.ServerSide.Server;
+import NetworkStuff.ServerSide.Log.ServerLogWriter;
+import NetworkStuff.ServerSide.Server;
 
 import java.io.EOFException;
 import java.io.FileInputStream;

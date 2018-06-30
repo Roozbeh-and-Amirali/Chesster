@@ -1,4 +1,4 @@
-package NetworkShit.ServerSide.Log;
+package NetworkStuff.ServerSide.Log;
 
 import java.io.File;
 import java.io.FileWriter;

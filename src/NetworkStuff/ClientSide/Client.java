@@ -1,4 +1,4 @@
-package NetworkShit.ClientSide;
+package NetworkStuff.ClientSide;
 
 import Enums.Ports;
 import Game.Profile;

@@ -1,11 +1,11 @@
-package NetworkShit.ServerSide.Handlers;
+package NetworkStuff.ServerSide.Handlers;
 
 import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.MadeAMoveCommand;
 import Game.Match;
 import Game.Profile;
-import NetworkShit.ServerSide.Log.ServerLogWriter;
-import NetworkShit.ServerSide.Server;
+import NetworkStuff.ServerSide.Log.ServerLogWriter;
+import NetworkStuff.ServerSide.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

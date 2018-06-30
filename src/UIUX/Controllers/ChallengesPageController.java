@@ -9,7 +9,7 @@ import ClientAndHandlerCommunication.Responses.NewChallengeResponse.GetChallenge
 import Enums.JoinerType;
 import Game.Match;
 import Game.Profile;
-import NetworkShit.ClientSide.Client;
+import NetworkStuff.ClientSide.Client;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

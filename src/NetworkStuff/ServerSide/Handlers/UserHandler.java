@@ -1,4 +1,4 @@
-package NetworkShit.ServerSide.Handlers;
+package NetworkStuff.ServerSide.Handlers;
 
 import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
@@ -21,9 +21,9 @@ import ClientAndHandlerCommunication.Responses.Response;
 import Enums.GameState;
 import Game.Match;
 import Game.Profile;
-import NetworkShit.ServerSide.Log.ServerLogWriter;
-import NetworkShit.ServerSide.SemiDataBase.DataBaseUpdator;
-import NetworkShit.ServerSide.Server;
+import NetworkStuff.ServerSide.Log.ServerLogWriter;
+import NetworkStuff.ServerSide.SemiDataBase.DataBaseUpdator;
+import NetworkStuff.ServerSide.Server;
 
 import java.io.*;
 import java.net.Socket;

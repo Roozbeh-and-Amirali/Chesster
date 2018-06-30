@@ -4,7 +4,7 @@ import BasicClasses.ChallengeFilter;
 import BasicClasses.Rating;
 import BasicClasses.Time;
 import Game.ClockNiggas.Clock;
-import NetworkShit.ClientSide.Client;
+import NetworkStuff.ClientSide.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 

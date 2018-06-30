@@ -1,23 +1,20 @@
 
-package NetworkShit.ServerSide;
+package NetworkStuff.ServerSide;
 
 import Enums.Ports;
 import Game.Match;
 import Game.Profile;
-import NetworkShit.ServerSide.Handlers.ChatHandler;
-import NetworkShit.ServerSide.Handlers.GameHandler;
-import NetworkShit.ServerSide.Handlers.JoinGameHandler;
-import NetworkShit.ServerSide.Handlers.UserHandler;
-import NetworkShit.ServerSide.Log.ServerLogWriter;
-import NetworkShit.ServerSide.SemiDataBase.ServerInitializer;
+import NetworkStuff.ServerSide.Handlers.ChatHandler;
+import NetworkStuff.ServerSide.Handlers.GameHandler;
+import NetworkStuff.ServerSide.Handlers.JoinGameHandler;
+import NetworkStuff.ServerSide.Handlers.UserHandler;
+import NetworkStuff.ServerSide.Log.ServerLogWriter;
+import NetworkStuff.ServerSide.SemiDataBase.ServerInitializer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /*
