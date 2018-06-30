@@ -210,48 +210,51 @@ public class GameRoomController extends ParentController implements Initializabl
 		Runnable runnable = new Runnable() {
 			@Override
 			public void run() {
-				while ( true ) {
-					try {
-						MadeAMoveCommand command = (MadeAMoveCommand) Client.gameIn.readObject();
+				synchronized (Client.gameIn) {
+					while (true) {
+						try {
+							MadeAMoveCommand command = (MadeAMoveCommand) Client.gameIn.readObject();
 //						match.setBoard( command.getMatch().getBoard() );
-						match = command.getMatch();
-						if ( !command.getMoveOwner().equals( Client.getProfile() ) ) {    //Age yeki Dge harekat ro anjaam dade bood
-							if (match.getHostProfile().equals(Client.getProfile()) || match.getHostProfile().equals(Client.getProfile())) {
-								if (match.getCurrentColor() == Color.BLACK) {
-									Mohre shaah = match.getBoard().getShaah(Color.BLACK);
-									if (shaah.getHarifValidCords(match.getBoard()).contains(shaah.getCord()))
-										System.out.println("BAAAKHTTIIIII");
-								}
-								if (match.getCurrentColor() == Color.WHITE) {
-									Mohre shaah = match.getBoard().getShaah(Color.WHITE);
-									if (shaah.getHarifValidCords(match.getBoard()).contains(shaah.getCord()))
-										System.out.println("BAAAKHTIIII");
+							match = command.getMatch();
+							if (!command.getMoveOwner().equals(Client.getProfile())) {    //Age yeki Dge harekat ro anjaam dade bood
+								if (match.getHostProfile().equals(Client.getProfile()) || match.getHostProfile().equals(Client.getProfile())) {
+									if (match.getCurrentColor() == Color.BLACK) {
+										Mohre shaah = match.getBoard().getShaah(Color.BLACK);
+										if (shaah.getHarifValidCords(match.getBoard()).contains(shaah.getCord()))
+											System.out.println("BAAAKHTTIIIII");
+									}
+									if (match.getCurrentColor() == Color.WHITE) {
+										Mohre shaah = match.getBoard().getShaah(Color.WHITE);
+										if (shaah.getHarifValidCords(match.getBoard()).contains(shaah.getCord()))
+											System.out.println("BAAAKHTIIII");
+									}
 								}
 							}
+							Platform.runLater(new Runnable() {
+								@Override
+								public void run() {
+									System.out.println("Let's update the gridPane...");
+									updateGridPane(command.getMatch().getBoard());
+									if (command.getMoveOwner().equals(command.getMatch().getHostProfile()))
+										hostMoves.getChildren().add(new Label(Integer.toString(command.getStart().getX())
+												+ command.getStart().getY() + command.getEnd().getX()
+												+ command.getEnd().getY()));
+									if (command.getMoveOwner().equals(command.getMatch().getGuestProfile()))
+										guestMoves.getChildren().add(new Label(Integer.toString(command.getStart().getX())
+												+ command.getStart().getY() + command.getEnd().getX()
+												+ command.getEnd().getY()));
+								}
+							});
+						} catch (IOException | ClassNotFoundException e) {
+							e.printStackTrace();
 						}
-						Platform.runLater(new Runnable() {
-							@Override
-							public void run() {
-								System.out.println( "Let's update the gridPane..." );
-								updateGridPane( command.getMatch().getBoard() );
-								if ( command.getMoveOwner().equals( command.getMatch().getHostProfile() ) )
-									hostMoves.getChildren().add( new Label( Integer.toString( command.getStart().getX() )
-									+ command.getStart().getY() + command.getEnd().getX()
-									+ command.getEnd().getY() ) );
-								if ( command.getMoveOwner().equals( command.getMatch().getGuestProfile() ) )
-									guestMoves.getChildren().add( new Label( Integer.toString( command.getStart().getX() )
-									+ command.getStart().getY() + command.getEnd().getX()
-									+ command.getEnd().getY() ) );
-							}
-						});
-					} catch (IOException|ClassNotFoundException e) {
-						e.printStackTrace();
-					}
 
+					}
 				}
 			}
-		};
 
+
+		};
 		return runnable;
 
 	}
