@@ -3,7 +3,7 @@ package ClientAndHandlerCommunication.Commands.FirstPageCommands;
 import BasicClasses.LoginInformation;
 import ClientAndHandlerCommunication.Commands.Command;
 
-public class CheckLoginValidnessCommand implements Command {
+public final class CheckLoginValidnessCommand implements Command {
 
     LoginInformation loginInformation;
 

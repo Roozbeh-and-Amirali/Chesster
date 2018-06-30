@@ -4,7 +4,7 @@ import Enums.JoinerType;
 import Game.Match;
 import Game.Profile;
 
-public class JoinGameCommand implements Command {
+public final class JoinGameCommand implements Command {
      private Match match;
      private Profile profile;
      private JoinerType joinerType;

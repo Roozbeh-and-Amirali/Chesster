@@ -3,7 +3,7 @@ package ClientAndHandlerCommunication.Commands.FirstPageCommands;
 
 import ClientAndHandlerCommunication.Commands.Command;
 
-public class GetProfileCommand implements Command {
+public final class GetProfileCommand implements Command {
 
     String userName;
 

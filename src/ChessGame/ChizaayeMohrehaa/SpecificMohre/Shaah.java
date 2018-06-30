@@ -37,14 +37,14 @@ public class Shaah extends Mohre {
 		ArrayList < Cord > returnValue = new ArrayList < Cord > ();
 		int x = this.getCord().getX();
 		int y = this.getCord().getY();
-		this.checkKishAndPut( board, returnValue, new Cord( x - 1, y - 1 ), isKishImportant );
-		this.checkKishAndPut( board, returnValue, new Cord( x, y - 1 ), isKishImportant );
-		this.checkKishAndPut( board, returnValue, new Cord( x + 1, y - 1 ), isKishImportant );
-		this.checkKishAndPut( board, returnValue, new Cord( x + 1, y ), isKishImportant );
-		this.checkKishAndPut( board, returnValue, new Cord( x + 1, y + 1 ), isKishImportant );
-		this.checkKishAndPut( board, returnValue, new Cord( x, y + 1 ), isKishImportant );
-		this.checkKishAndPut( board, returnValue, new Cord( x - 1, y + 1 ), isKishImportant );
-		this.checkKishAndPut( board, returnValue, new Cord( x - 1, y ), isKishImportant );
+		this.checkKishAndPut( board.getCopy(), returnValue, new Cord( x - 1, y - 1 ), isKishImportant );
+		this.checkKishAndPut( board.getCopy(), returnValue, new Cord( x, y - 1 ), isKishImportant );
+		this.checkKishAndPut( board.getCopy(), returnValue, new Cord( x + 1, y - 1 ), isKishImportant );
+		this.checkKishAndPut( board.getCopy(), returnValue, new Cord( x + 1, y ), isKishImportant );
+		this.checkKishAndPut( board.getCopy(), returnValue, new Cord( x + 1, y + 1 ), isKishImportant );
+		this.checkKishAndPut( board.getCopy(), returnValue, new Cord( x, y + 1 ), isKishImportant );
+		this.checkKishAndPut( board.getCopy(), returnValue, new Cord( x - 1, y + 1 ), isKishImportant );
+		this.checkKishAndPut( board.getCopy(), returnValue, new Cord( x - 1, y ), isKishImportant );
 
 //		In chizHaaE ke paEn neveshtam, baraa-e inan ke bebinim taraf mitoone ghal'e kone yaa na!
 		if ( !this.isMoved() ) {	//Age Shaah harekat nadarde bood

@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 
-public class RecieveChatCommand implements Command {
+public final class RecieveChatCommand implements Command {
 
     private ChatChannelType channelType;
     private String msg;

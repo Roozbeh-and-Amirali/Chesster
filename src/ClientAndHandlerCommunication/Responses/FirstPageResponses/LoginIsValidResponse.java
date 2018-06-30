@@ -2,7 +2,7 @@ package ClientAndHandlerCommunication.Responses.FirstPageResponses;
 
 import ClientAndHandlerCommunication.Responses.Response;
 
-public class LoginIsValidResponse implements Response {
+public final class LoginIsValidResponse implements Response {
 
     private boolean answer;
 

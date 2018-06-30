@@ -5,7 +5,7 @@ import Game.Profile;
 
 import java.util.List;
 
-public class SendChatMsgCommand implements Command {
+public final class SendChatMsgCommand implements Command {
     private String massage;
     private List<Profile> listeners;
 

@@ -3,7 +3,7 @@ package ClientAndHandlerCommunication.Responses.FirstPageResponses;
 import ClientAndHandlerCommunication.Responses.Response;
 import Game.Profile;
 
-public class GetProfileResponse implements Response {
+public final class GetProfileResponse implements Response {
 
 	private Profile profile;
 

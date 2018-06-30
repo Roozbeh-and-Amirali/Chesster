@@ -2,7 +2,7 @@ package ClientAndHandlerCommunication.Commands.ParentCommands;
 
 import ClientAndHandlerCommunication.Commands.Command;
 
-public class UsernameExistenceCommand implements Command {
+public final class UsernameExistenceCommand implements Command {
 
     String username;
 

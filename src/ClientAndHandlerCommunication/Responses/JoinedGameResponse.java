@@ -4,7 +4,7 @@ import Enums.JoinerType;
 import Game.Match;
 import Game.Profile;
 
-public class JoinedGameResponse implements Response {
+public final class JoinedGameResponse implements Response {
     private Match match;
     private Profile profile;
     private JoinerType joinerType;

@@ -4,7 +4,7 @@ package ClientAndHandlerCommunication.Commands.Common;
 import ClientAndHandlerCommunication.Commands.Command;
 import Enums.GameState;
 
-public class ChangeGameStateCommand implements Command {
+public final class ChangeGameStateCommand implements Command {
 
     private GameState gameState;
 

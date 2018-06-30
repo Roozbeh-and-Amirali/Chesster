@@ -7,7 +7,7 @@ import Game.Profile;
 import java.util.List;
 import java.util.Map;
 
-public class GetChallengesResponse implements Response {
+public final class GetChallengesResponse implements Response {
    private Map<Match, Profile> challenges;
 
     public Map<Match, Profile> getChallenges() {

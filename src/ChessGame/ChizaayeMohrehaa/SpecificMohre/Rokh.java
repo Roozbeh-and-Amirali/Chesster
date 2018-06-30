@@ -48,40 +48,40 @@ public class Rokh extends Mohre {
 //		Baalaa
 		for ( int i = 1; y - i >= 0; i++ ){
 			if ( board.getBlocks()[ y - i ][ x ].getMohre() == null )
-				this.addCorToValidCors( board, this, returnValue, new Cord( x, y - i ), isKishImportant );
+				this.addCorToValidCors( board.getCopy(), this, returnValue, new Cord( x, y - i ), isKishImportant );
 			else {
 				if (board.getBlocks()[y - i][x].getMohre().getColor() != this.getColor())
-					this.addCorToValidCors(board, this, returnValue, new Cord(x, y - i), isKishImportant);
+					this.addCorToValidCors(board.getCopy(), this, returnValue, new Cord(x, y - i), isKishImportant);
 				break;
 			}
 		}
 //		Rast
 		for ( int i = 1; x + i < Board.SIZE; i++ ) {
 			if ( board.getBlocks()[ y ][ x + i ].getMohre() == null )
-				this.addCorToValidCors( board, this, returnValue, new Cord( x + i, y ), isKishImportant );
+				this.addCorToValidCors( board.getCopy(), this, returnValue, new Cord( x + i, y ), isKishImportant );
 			else {
 				if (board.getBlocks()[y][x + i].getMohre().getColor() != this.getColor())
-					this.addCorToValidCors(board, this, returnValue, new Cord(x + i, y), isKishImportant);
+					this.addCorToValidCors(board.getCopy(), this, returnValue, new Cord(x + i, y), isKishImportant);
 				break;
 			}
 		}
 //		PaaEn
 		for ( int i = 1; y + i < Board.SIZE; i++ ){
 			if ( board.getBlocks()[ y + i ][ x ].getMohre() == null )
-				this.addCorToValidCors( board, this, returnValue, new Cord( x, y + i ), isKishImportant );
+				this.addCorToValidCors( board.getCopy(), this, returnValue, new Cord( x, y + i ), isKishImportant );
 			else {
 				if (board.getBlocks()[y + i][x].getMohre().getColor() != this.getColor())
-					this.addCorToValidCors(board, this, returnValue, new Cord(x, y + i), isKishImportant);
+					this.addCorToValidCors(board.getCopy(), this, returnValue, new Cord(x, y + i), isKishImportant);
 				break;
 			}
 		}
 //		Chap
 		for ( int i = 1; x - i >= 0; i++ ) {
 			if ( board.getBlocks()[ y ][ x - i ].getMohre() == null )
-				this.addCorToValidCors( board, this, returnValue, new Cord( x - i, y ), isKishImportant );
+				this.addCorToValidCors( board.getCopy(), this, returnValue, new Cord( x - i, y ), isKishImportant );
 			else {
 				if (board.getBlocks()[y][x - i].getMohre().getColor() != this.getColor())
-					this.addCorToValidCors(board, this, returnValue, new Cord(x - i, y), isKishImportant);
+					this.addCorToValidCors(board.getCopy(), this, returnValue, new Cord(x - i, y), isKishImportant);
 				break;
 			}
 		}

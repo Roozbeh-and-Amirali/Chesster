@@ -3,7 +3,7 @@ package ClientAndHandlerCommunication.Responses.FirstPageResponses;
 
 import ClientAndHandlerCommunication.Responses.Response;
 
-public class ProfileCreationResponse implements Response {
+public final class ProfileCreationResponse implements Response {
 
     private String message;
     private boolean wasSuccessful;

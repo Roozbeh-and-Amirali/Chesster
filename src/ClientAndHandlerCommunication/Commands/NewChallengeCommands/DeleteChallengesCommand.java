@@ -5,7 +5,7 @@ import Game.Match;
 
 import java.util.List;
 
-public class DeleteChallengesCommand implements Command {
+public final class DeleteChallengesCommand implements Command {
     private List<Match> list;
     private Match active;
 

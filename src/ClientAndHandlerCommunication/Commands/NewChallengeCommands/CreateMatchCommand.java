@@ -3,7 +3,7 @@ package ClientAndHandlerCommunication.Commands.NewChallengeCommands;
 import ClientAndHandlerCommunication.Commands.Command;
 import Game.Match;
 
-public class CreateMatchCommand implements Command {
+public final class CreateMatchCommand implements Command {
     private Match match;
 
     public CreateMatchCommand(Match match) {

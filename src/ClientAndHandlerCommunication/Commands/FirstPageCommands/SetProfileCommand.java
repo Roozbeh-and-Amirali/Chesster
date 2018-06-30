@@ -3,7 +3,7 @@ package ClientAndHandlerCommunication.Commands.FirstPageCommands;
 import ClientAndHandlerCommunication.Commands.Command;
 import Game.Profile;
 
-public class SetProfileCommand implements Command {
+public final class SetProfileCommand implements Command {
 
     private Profile profile;
 

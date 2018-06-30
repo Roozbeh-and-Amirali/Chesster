@@ -2,7 +2,7 @@ package ClientAndHandlerCommunication.Responses.Common;
 
 import ClientAndHandlerCommunication.Responses.Response;
 
-public class ChangeGameStateResponse implements Response {
+public final class ChangeGameStateResponse implements Response {
 
     private boolean isSuccessful;
 

@@ -58,6 +58,11 @@ public class GameRoomController extends ParentController implements Initializabl
 	@FXML
 	GridPane boardPane;
 
+	@FXML
+	VBox hostMoves;
+	@FXML
+	VBox guestMoves;
+
 	private Match match;
 	private Profile host;
 	private Profile guest;
@@ -141,6 +146,9 @@ public class GameRoomController extends ParentController implements Initializabl
 						System.out.println("I am in this if ");
 						selectedPieceToMoveCord = new Cord(x, y);
 						selectedPieceValidDests = match.getBoard().getBlocks()[y][x].getMohre().getValidDests(match.getBoard().getCopy(), true);
+						for ( Cord temp : selectedPieceValidDests )
+							match.getBoard().getBlocks()[temp.getY()][temp.getX()].setSelected( true );
+						updateGridPane( match.getBoard() );
 					} else {
 						if (selectedPieceToMoveCord != null)
 							if (selectedPieceValidDests.contains(new Cord(x, y))) {
@@ -150,13 +158,15 @@ public class GameRoomController extends ParentController implements Initializabl
 								updateGridPane( match.getBoard() );
 								match.changeCurrentColor();
 								match.changeCurrentPlayer();
-								selectedPieceToMoveCord = null;
-								selectedPieceValidDests = null;
 								try {
-									Client.gameOut.writeObject( new MadeAMoveCommand( match ) );
+									Client.gameOut.writeObject( new MadeAMoveCommand( match, Client.getProfile(),
+											new Cord( selectedPieceToMoveCord.getX(), selectedPieceToMoveCord.getY() ),
+											new Cord( x, y ) ) );
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
+								selectedPieceToMoveCord = null;
+								selectedPieceValidDests = null;
 							}
 					}
 				}
@@ -203,12 +213,35 @@ public class GameRoomController extends ParentController implements Initializabl
 				while ( true ) {
 					try {
 						MadeAMoveCommand command = (MadeAMoveCommand) Client.gameIn.readObject();
-						match.setBoard( command.getMatch().getBoard() );
+//						match.setBoard( command.getMatch().getBoard() );
+						match = command.getMatch();
+						if ( !command.getMoveOwner().equals( Client.getProfile() ) ) {    //Age yeki Dge harekat ro anjaam dade bood
+							if (match.getHostProfile().equals(Client.getProfile()) || match.getHostProfile().equals(Client.getProfile())) {
+								if (match.getCurrentColor() == Color.BLACK) {
+									Mohre shaah = match.getBoard().getShaah(Color.BLACK);
+									if (shaah.getHarifValidCords(match.getBoard()).contains(shaah.getCord()))
+										System.out.println("BAAAKHTTIIIII");
+								}
+								if (match.getCurrentColor() == Color.WHITE) {
+									Mohre shaah = match.getBoard().getShaah(Color.WHITE);
+									if (shaah.getHarifValidCords(match.getBoard()).contains(shaah.getCord()))
+										System.out.println("BAAAKHTIIII");
+								}
+							}
+						}
 						Platform.runLater(new Runnable() {
 							@Override
 							public void run() {
 								System.out.println( "Let's update the gridPane..." );
 								updateGridPane( command.getMatch().getBoard() );
+								if ( command.getMoveOwner().equals( command.getMatch().getHostProfile() ) )
+									hostMoves.getChildren().add( new Label( Integer.toString( command.getStart().getX() )
+									+ command.getStart().getY() + command.getEnd().getX()
+									+ command.getEnd().getY() ) );
+								if ( command.getMoveOwner().equals( command.getMatch().getGuestProfile() ) )
+									guestMoves.getChildren().add( new Label( Integer.toString( command.getStart().getX() )
+									+ command.getStart().getY() + command.getEnd().getX()
+									+ command.getEnd().getY() ) );
 							}
 						});
 					} catch (IOException|ClassNotFoundException e) {
@@ -323,10 +356,26 @@ public class GameRoomController extends ParentController implements Initializabl
 	private void updateGridPane( Board board ) {
 //		ImageView test = new ImageView( new Image(Mohre.MOHRE_IMAGES_ADDRESS + board.getBlocks()[0][0].getMohre().toString() ) );
 		for ( int i = 0; i < Board.SIZE * Board.SIZE; i++ ) {
-			if ( board.getBlocks()[ i / Board.SIZE ][ i % Board.SIZE ].getMohre() != null )
-				( (ImageView) boardPane.getChildren().get( i ) ).setImage( new Image( Mohre.MOHRE_IMAGES_ADDRESS + board.getBlocks()[ i / Board.SIZE ][ i % Board.SIZE ].getMohre().toString() ) );
-			else
-				( (ImageView) boardPane.getChildren().get( i ) ).setImage( null );
+			if ( board.getBlocks()[ i / Board.SIZE ][ i % Board.SIZE ].getMohre() != null ) {
+				String imageAddress = Mohre.MOHRE_IMAGES_ADDRESS + board.getBlocks()[i/Board.SIZE][i%Board.SIZE].getMohre().toString();
+				ImageView currentImage = (ImageView) boardPane.getChildren().get(i);
+				currentImage.setImage( new Image( imageAddress ) );
+/*				if ( board.getBlocks()[i/Board.SIZE][i%Board.SIZE].isSelected() ) {
+					System.out.println( new Cord( i % Board.SIZE, i / Board.SIZE ) );
+					currentImage.setStyle("-fx-border-width: 3;" + " -fx-border-color: black;");
+					board.getBlocks()[i/Board.SIZE][i%Board.SIZE].setSelected( false );
+				}*/
+//				((ImageView) boardPane.getChildren().get(i)).setImage( new Image(imageAddress ) );
+			}
+			else {
+				ImageView temp = (ImageView) boardPane.getChildren().get(i);
+				temp.setImage( null );
+				if ( board.getBlocks()[i/Board.SIZE][i%Board.SIZE].isSelected() ) {
+//					temp.setStyle( "-fx-border-width: 3; -fx-border-color: black" );
+					temp.setImage( new Image( "/Assets/Chess/chessselected.png" ) );
+					board.getBlocks()[i/Board.SIZE][i%Board.SIZE].setSelected( false );
+				}
+			}
 		}
 	}
 

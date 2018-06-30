@@ -3,7 +3,7 @@ package ClientAndHandlerCommunication.Commands;
 import Enums.ChatChannelType;
 import Game.Match;
 
-public class SendChatCommand implements Command {
+public final class SendChatCommand implements Command {
     private String msg;
     private String sender;
     private Match match;
