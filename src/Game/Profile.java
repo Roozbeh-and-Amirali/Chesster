@@ -26,7 +26,7 @@ public class Profile implements Serializable {
     private Rating rating;
     private int challengesNumber; //number of challenges this user crated
 
-    private ChallengeFilter challengeFilter;
+    private ChallengeFilter challengeFilter =new ChallengeFilter();
 
     private List<Match> requestedMatches=new ArrayList<>();
     private Match activeMatch;

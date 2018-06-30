@@ -21,6 +21,8 @@ import ClientAndHandlerCommunication.Responses.Response;
 import Enums.GameState;
 import Game.Match;
 import Game.Profile;
+import NetworkShit.ServerSide.Log.ServerLogWriter;
+import NetworkShit.ServerSide.SemiDataBase.DataBaseUpdator;
 import NetworkShit.ServerSide.Server;
 
 import java.io.*;
@@ -76,9 +78,12 @@ public class UserHandler implements Runnable, Serializable {
         } catch (IOException | ClassNotFoundException e) {
             if (e instanceof EOFException) {
                 try {
-                    System.out.println(this.profile.getUserName() + " disconnected.");
+
+                    ServerLogWriter.getInstance().writeLog(this.profile.getUserName() + " Dissconnected.");
+
                 } catch (NullPointerException e1) {
-                    System.out.println("a client has been disconnected");
+
+                    ServerLogWriter.getInstance().writeLog("A Client Has DissConnected");
                 }
                 this.isclientConnected = false;
 
@@ -93,7 +98,7 @@ public class UserHandler implements Runnable, Serializable {
             this.oos.writeObject(response);
         } catch (IOException e) {
             if (e instanceof EOFException) {
-                System.out.println(this.profile.getUserName() + " disconnected.");
+                ServerLogWriter.getInstance().writeLog(this.profile.getUserName() + " Dissconnected.");
                 this.isclientConnected = false;
 
             } else
@@ -106,25 +111,32 @@ public class UserHandler implements Runnable, Serializable {
         Response returnValue = null;
         if (command instanceof CheckLoginValidnessCommand) {
             LoginInformation temp = ((CheckLoginValidnessCommand) command).getLoginInformation();
+            ServerLogWriter.getInstance().writeLog("Check login validness command recieved from: "+temp.getUsername());
             boolean answer = this.isLoginValid(temp);
 
             returnValue = new LoginIsValidResponse(answer);
 //			return ( new LoginIsValidResponse( answer ) );
         } else if (command instanceof CreateProfileCommand) {
             Profile newProfile = ((CreateProfileCommand) command).getProfile();
+            ServerLogWriter.getInstance().writeLog("create profile command recieved from: "+newProfile.getUserName());
             returnValue = this.addProfile(newProfile);
         } else if (command instanceof GetProfileCommand) {
             Profile profile = Server.profiles.get(((GetProfileCommand) command).getUserName());
+            ServerLogWriter.getInstance().writeLog("Get profile command recieved from: "+profile.getUserName());
             returnValue = new GetProfileResponse(profile);
         } else if (command instanceof SetProfileCommand) {
+
+            ServerLogWriter.getInstance().writeLog("set profile command recieved from: "+((SetProfileCommand) command).getProfile().getUserName());
             this.setProfile(((SetProfileCommand) command).getProfile());
         } else if (command instanceof UsernameExistenceCommand) {
+            ServerLogWriter.getInstance().writeLog("User existance command recieved from: "+((UsernameExistenceCommand) command).getUsername());
             if (Server.profiles.get(((UsernameExistenceCommand) command).getUsername()) == null)
                 returnValue = new UsernameExistenceRespond(false);
             else returnValue = new UsernameExistenceRespond(true);
         } else if (command instanceof ChangeGameStateCommand) {
             returnValue = this.changeGameStateThings((ChangeGameStateCommand) command);
         } else if (command instanceof GetChallengesCommand) {
+
             GetChallengesResponse challengesResponse = new GetChallengesResponse();
             Map<Match, Profile> serverChallenges = new ConcurrentHashMap<>(Server.challenges);
             challengesResponse.setChallenges(serverChallenges);
@@ -132,6 +144,7 @@ public class UserHandler implements Runnable, Serializable {
             returnValue = challengesResponse;
         } else if (command instanceof CreateMatchCommand) {
             Match match = ((CreateMatchCommand) command).getMatch();
+            ServerLogWriter.getInstance().writeLog("Create match command recieved from: "+match.getHostProfile().getUserName());
             Server.challenges.put(match, match.getHostProfile());
 
             returnValue = null;
@@ -158,6 +171,8 @@ public class UserHandler implements Runnable, Serializable {
         else {
             returnValue = new ProfileCreationResponse(true, "User created successfully");
             Server.profiles.put(profile.getUserName(), profile);
+            DataBaseUpdator.getInstance().updateDataBase();
+            ServerLogWriter.getInstance().writeLog("User: "+profile.getUserName()+" created an account.");
 
 
 /*			for (Map.Entry<String,Profile> iterator : Server.profiles.entrySet() )

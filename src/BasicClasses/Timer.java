@@ -3,7 +3,7 @@ package BasicClasses;
 import java.io.Serializable;
 
 public class Timer implements Serializable {
-   private Long initTime;
+   private long initTime=0;
     public Timer(){
     }
 
@@ -12,7 +12,7 @@ public class Timer implements Serializable {
     }
 
     public Time getTime(){
-        Long nowsTimeInMilis=System.nanoTime();
+        long nowsTimeInMilis=System.nanoTime();
         int sec=(int) ((nowsTimeInMilis-this.initTime)/1e9);
 
 

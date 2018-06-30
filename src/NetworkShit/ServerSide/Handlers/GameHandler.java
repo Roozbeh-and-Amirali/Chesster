@@ -4,6 +4,7 @@ import ClientAndHandlerCommunication.Commands.Command;
 import ClientAndHandlerCommunication.Commands.MadeAMoveCommand;
 import Game.Match;
 import Game.Profile;
+import NetworkShit.ServerSide.Log.ServerLogWriter;
 import NetworkShit.ServerSide.Server;
 
 import java.io.IOException;
@@ -36,10 +37,11 @@ public class GameHandler implements Runnable{
             try {
                 command = (Command) this.ois.readObject();
             } catch (IOException|ClassNotFoundException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             if ( command instanceof MadeAMoveCommand ){
                 Match match = ((MadeAMoveCommand) command).getMatch();
+                ServerLogWriter.getInstance().writeLog("User: "+((MadeAMoveCommand) command).getMatch().getCurrentPlayer().getUserName()+" made a move! ");
                 try {
                     System.out.println( match.getHostProfile() );
                     System.out.println( match.getGuestProfile() );

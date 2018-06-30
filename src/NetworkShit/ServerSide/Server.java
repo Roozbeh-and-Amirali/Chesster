@@ -8,6 +8,8 @@ import NetworkShit.ServerSide.Handlers.ChatHandler;
 import NetworkShit.ServerSide.Handlers.GameHandler;
 import NetworkShit.ServerSide.Handlers.JoinGameHandler;
 import NetworkShit.ServerSide.Handlers.UserHandler;
+import NetworkShit.ServerSide.Log.ServerLogWriter;
+import NetworkShit.ServerSide.SemiDataBase.ServerInitializer;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -39,8 +41,11 @@ public class Server {
 	public static Map<UserHandler, GameHandler> gameHandlers = new ConcurrentHashMap<>();
 
 	public static void main(String[] args) {
+		ServerInitializer.getInstance().initializeServer();
 
-		Profile p1=new Profile();
+
+
+		/*Profile p1=new Profile();
 		p1.setUserName("a");
 		p1.setName("a");
 		p1.setPassword("a");
@@ -56,7 +61,7 @@ public class Server {
 		p3.setUserName("r");
 		p3.setName("r");
 		p3.setPassword("r");
-		profiles.put(p3.getUserName(),p3);
+		profiles.put(p3.getUserName(),p3);*/
 
 		ServerSocket userSocket = null;
 		ServerSocket chatSocket=null;
@@ -67,8 +72,10 @@ public class Server {
 			chatSocket=new ServerSocket(Ports.CHAT_PORT);
 			joinSocket=new ServerSocket(Ports.JOINGAME_PORT);
 			gameSocket=new ServerSocket(Ports.GAME_PORT);
+			ServerLogWriter.getInstance().writeLog("Server is Up!");
 		} catch (IOException e) {
-			e.printStackTrace();
+			ServerLogWriter.getInstance().writeLog("Server Ports Are Full!");
+			System.exit(12);
 		}
 
 		while ( Server.isIsServerUp() ){
@@ -77,22 +84,23 @@ public class Server {
 			Socket currentJoinSocket=null;
 			Socket currentGameSocket=null;
 			try {
-				System.out.println( "Waiting for a client..." );
+				//System.out.println( "Waiting for a client..." );
 				currentuserSocket = userSocket.accept();
 				UserHandler userHandler = new UserHandler( currentuserSocket );
-				System.out.println( "waiting for the clients chatsocket" );
+				//System.out.println( "waiting for the clients chatsocket" );
 				currentChatSocket=chatSocket.accept();
 				ChatHandler chatHandler=new ChatHandler(currentChatSocket);
 				chatHandlers.put(userHandler,chatHandler);
-				System.out.println("waiting for the clients joinsocket");
+				//System.out.println("waiting for the clients joinsocket");
 				currentJoinSocket=joinSocket.accept();
 				JoinGameHandler joinGameHandler=new JoinGameHandler(currentJoinSocket);
 				joinGameHandlers.put(userHandler,joinGameHandler);
-				System.out.println("waiting for the clients gamesocket");
+				//System.out.println("waiting for the clients gamesocket");
 				currentGameSocket=gameSocket.accept();
 				GameHandler gameHandler=new GameHandler(currentGameSocket);
 				gameHandlers.put( userHandler, gameHandler );
-				System.out.println("got all the sockets nigga");
+				ServerLogWriter.getInstance().writeLog("A Client Has Connected");
+				//System.out.println("got all the sockets nigga");
 
 
 				new Thread( userHandler ).start();

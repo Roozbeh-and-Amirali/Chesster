@@ -7,6 +7,7 @@ import ClientAndHandlerCommunication.Responses.Response;
 import Enums.JoinerType;
 import Game.Match;
 import Game.Profile;
+import NetworkShit.ServerSide.Log.ServerLogWriter;
 import NetworkShit.ServerSide.Server;
 
 import java.io.EOFException;
@@ -103,6 +104,7 @@ public class JoinGameHandler implements Runnable {
                         }
                         JoinGameHandler targetHandler=Server.joinGameHandlers.get(Server.userHandlers.get(joinedGameResponse.getMatch().getHostProfile()));
                         targetHandler.oos.writeObject(joinedGameResponse);
+                        ServerLogWriter.getInstance().writeLog("User: "+joinedGameResponse.getProfile().getUserName()+" joined "+match.getHostProfile().getUserName()+"s game. ");
                         this.oos.writeObject(joinedGameResponse);
                         break;
                     }
@@ -130,6 +132,7 @@ public class JoinGameHandler implements Runnable {
                              targetHandler=Server.joinGameHandlers.get(Server.userHandlers.get(joinedGameResponse.getMatch().getGuestProfile()));
                             targetHandler.oos.writeObject(joinedGameResponse);
                         }
+                        ServerLogWriter.getInstance().writeLog("User: "+joinedGameResponse.getProfile().getUserName()+" joined "+match.getHostProfile().getUserName()+"s game. ");
 
                         break;
                     }

@@ -1,11 +1,13 @@
 package NetworkShit.ServerSide.Handlers;
 
 import ClientAndHandlerCommunication.Commands.Command;
+import ClientAndHandlerCommunication.Commands.MadeAMoveCommand;
 import ClientAndHandlerCommunication.Commands.RecieveChatCommand;
 import ClientAndHandlerCommunication.Commands.SendChatCommand;
 import ClientAndHandlerCommunication.Responses.Response;
 import Enums.ChatChannelType;
 import Game.Profile;
+import NetworkShit.ServerSide.Log.ServerLogWriter;
 import NetworkShit.ServerSide.Server;
 
 import java.io.EOFException;
@@ -69,6 +71,7 @@ public class ChatHandler implements Runnable {
     private void sendChat(SendChatCommand chatCommand)throws IOException{
 
             if (chatCommand.getChatChannelType()== ChatChannelType.AUDIENCES_CHANNEL){
+                ServerLogWriter.getInstance().writeLog("User: "+chatCommand.getSender()+" send a massage in Audiences channel in "+chatCommand.getMatch().getHostProfile().getUserName()+"s match!");
                 for (Profile audience:chatCommand.getMatch().getAudience()) {
                     if (!audience.getUserName().equals(chatCommand.getSender())) {
                         ChatHandler targetHandler = Server.chatHandlers.get(Server.userHandlers.get(audience));
@@ -86,6 +89,8 @@ public class ChatHandler implements Runnable {
 
             }
             else {
+                ServerLogWriter.getInstance().writeLog("User: "+chatCommand.getSender()+" send a massage in Rivals channel in "+chatCommand.getMatch().getHostProfile().getUserName()+"s match!");
+
                 //if (chatCommand.getSender().equals(chatCommand.getMatch().getHostProfile().getUserName())) {
                     ChatHandler targetHandler = Server.chatHandlers.get(Server.userHandlers.get(chatCommand.getMatch().getGuestProfile()));
                     targetHandler.oos.writeObject(new RecieveChatCommand(chatCommand.getMsg(), chatCommand.getSender(),ChatChannelType.RIVAL_CHANNEL));

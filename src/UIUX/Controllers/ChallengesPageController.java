@@ -6,9 +6,7 @@ import ClientAndHandlerCommunication.Commands.NewChallengeCommands.DeleteChallen
 import ClientAndHandlerCommunication.Commands.NewChallengeCommands.GetChallengesCommand;
 import ClientAndHandlerCommunication.Responses.JoinedGameResponse;
 import ClientAndHandlerCommunication.Responses.NewChallengeResponse.GetChallengesResponse;
-import ClientAndHandlerCommunication.Responses.Response;
 import Enums.JoinerType;
-import Game.ClockNiggas.Clock;
 import Game.Match;
 import Game.Profile;
 import NetworkShit.ClientSide.Client;
@@ -31,22 +29,19 @@ import java.util.concurrent.TimeUnit;
 
 public class ChallengesPageController extends ParentController implements Initializable {
 
-	@FXML
-	 VBox challengesVBox;
-
-
-
     final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
-    private int i=0;
+    @FXML
+    VBox challengesVBox;
+    private int i = 0;
 
 
-	private List<Match> challenges=new ArrayList<>();
+    private List<Match> challenges = new ArrayList<>();
 
-	private ChallengeFilter filter;
+    private ChallengeFilter filter;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("AAAAAYYY MELLLAT MAAAAAN "+Client.getProfile());
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("AAAAAYYY MELLLAT MAAAAAN " + Client.getProfile());
 /*		Service<Void> service = new Service<Void>() {
 			@Override
 			protected Task<Void> createTask() {
@@ -128,158 +123,156 @@ public class ChallengesPageController extends ParentController implements Initia
             @Override
             public void run() {
                 //while ( true ) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
 
-                                Client.userOut.writeObject(new GetChallengesCommand());
-                                GetChallengesResponse response = (GetChallengesResponse) Client.userIn.readObject();
-                                createHbox(response.getChallenges());
-                            } catch ( Exception e ) {
-                                System.exit( 5 );
-                            }
+                            Client.userOut.writeObject(new GetChallengesCommand());
+                            GetChallengesResponse response = (GetChallengesResponse) Client.userIn.readObject();
+                            createHbox(response.getChallenges());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.exit(5);
                         }
-                    });
+                    }
+                });
                 //}
             }
-        }, 1, 500, TimeUnit.MILLISECONDS );
+        }, 1, 500, TimeUnit.MILLISECONDS);
 
         //System.out.println( "Thread started!" );
-	}
+    }
 
-	public void createNewChallenge(){
-	    scheduler.shutdown();
-		this.loadPage("NewChallengePage");
+    public void createNewChallenge() {
+        scheduler.shutdown();
+        this.loadPage("NewChallengePage");
 
-	}
+    }
 
-	public void backToMenu(){
-	    scheduler.shutdown();
-		this.loadPage("MainMenu");
+    public void backToMenu() {
+        scheduler.shutdown();
+        this.loadPage("MainMenu");
 
-	}
+    }
 
-	public  void createHbox(Map<Match, Profile> challenges){
+    public void createHbox(Map<Match, Profile> challenges) {
 
-	    challengesVBox.getChildren().clear();
+        challengesVBox.getChildren().clear();
 
-		for (Match match: challenges.keySet()) {
-			HBox matchBox=match.getMatchTile();
-			if (match.getGuestProfile()!=null)
-			    matchBox.setStyle("-fx-background-color: green;");
-			matchBox.setStyle("-fx-border-style: solid inside ;" + "-fx-border-width: 2px;"+"-fx-border-color: black;");
-			matchBox.setOnMouseEntered((event1)-> {
-				matchBox.setEffect(new DropShadow());
-			});
-			matchBox.setOnMouseExited((event2)-> {
-				matchBox.setEffect(null);
-			});
-			matchBox.setOnMouseClicked((event3) -> {
-				joinMatchAlert(match);
+        for (Match match : challenges.keySet()) {
 
-			});
-			 challengesVBox.getChildren().add(matchBox);
-		}
-	}
+                if (Client.getProfile().getChallengeFilter().isChallengeOk(match)) {
+                    HBox matchBox = match.getMatchTile();
+                    if (match.getGuestProfile() != null)
+                        matchBox.setStyle("-fx-background-color: green;");
+                    matchBox.setStyle("-fx-border-style: solid inside ;" + "-fx-border-width: 2px;" + "-fx-border-color: black;");
+                    matchBox.setOnMouseEntered((event1) -> {
+                        matchBox.setEffect(new DropShadow());
+                    });
+                    matchBox.setOnMouseExited((event2) -> {
+                        matchBox.setEffect(null);
+                    });
+                    matchBox.setOnMouseClicked((event3) -> {
+                        joinMatchAlert(match);
 
-	public  void joinMatchAlert(Match match){
-		if (!match.getHostProfile().equals(Client.getProfile())) {
+                    });
+                    challengesVBox.getChildren().add(matchBox);
+                }
+        }
+    }
 
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setTitle("Join Match");
-			alert.setHeaderText("Do you Want to join " + match.getHostProfile().getUserName() + "'s challenge?");
-			alert.setContentText("Join as...");
+    public void joinMatchAlert(Match match) {
+        if (!match.getHostProfile().equals(Client.getProfile())) {
 
-			ButtonType asAudienceButton = new ButtonType("Audience");
-			ButtonType asContestandButton = new ButtonType("Contestant");
-			ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Join Match");
+            alert.setHeaderText("Do you Want to join " + match.getHostProfile().getUserName() + "'s challenge?");
+            alert.setContentText("Join as...");
+
+            ButtonType asAudienceButton = new ButtonType("Audience");
+            ButtonType asContestandButton = new ButtonType("Contestant");
+            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
 
+            alert.getButtonTypes().setAll(asAudienceButton, asContestandButton, cancel);
 
-			alert.getButtonTypes().setAll(asAudienceButton, asContestandButton,cancel);
-
-            if (match.getGuestProfile()!=null) {
+            if (match.getGuestProfile() != null) {
                 alert.getButtonTypes().remove(asContestandButton);
                 System.out.println("removing button");
             }
-			Optional<ButtonType> as = alert.showAndWait();
+            Optional<ButtonType> as = alert.showAndWait();
 
-			if (as.get().equals(asAudienceButton)) {
-			    Client.getProfile().setActiveMatch(match);
-			    match.getAudience().add(Client.getProfile());
-			    //if (match.getGuestProfile()!=null)
-                    this.sendjoinGameCommand(new JoinGameCommand(match,Client.getProfile(), JoinerType.AUDIENCE));
+            if (as.get().equals(asAudienceButton)) {
+                Client.getProfile().setActiveMatch(match);
+                match.getAudience().add(Client.getProfile());
+                //if (match.getGuestProfile()!=null)
+                this.sendjoinGameCommand(new JoinGameCommand(match, Client.getProfile(), JoinerType.AUDIENCE));
                 try {
-                    JoinedGameResponse joinedGameResponse=(JoinedGameResponse) Client.joinGameIn.readObject();
+                    JoinedGameResponse joinedGameResponse = (JoinedGameResponse) Client.joinGameIn.readObject();
                     Client.getProfile().setActiveMatch(joinedGameResponse.getMatch());
-                } catch (IOException|ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-                this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches()),null));
+                this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches()), null));
                 scheduler.shutdown();
 
                 loadPage("GameRoomPage");
-			} else if (as.get().equals(asContestandButton)) {
+            } else if (as.get().equals(asContestandButton)) {
 
-				Client.getProfile().setActiveMatch(match);
+                Client.getProfile().setActiveMatch(match);
                 match.setGuestProfile(Client.getProfile());
-                this.sendjoinGameCommand(new JoinGameCommand(match,Client.getProfile(), JoinerType.GUEST));
+                this.sendjoinGameCommand(new JoinGameCommand(match, Client.getProfile(), JoinerType.GUEST));
                 try {
-                    JoinedGameResponse joinedGameResponse=(JoinedGameResponse) Client.joinGameIn.readObject();
+                    JoinedGameResponse joinedGameResponse = (JoinedGameResponse) Client.joinGameIn.readObject();
                     Client.getProfile().setActiveMatch(joinedGameResponse.getMatch());
-                } catch (IOException|ClassNotFoundException e) {
+                } catch (IOException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
                 //System.out.println(Client.getProfile().getRequestedMatches());
-				this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches()),null));
+                this.sendUserCommand(new DeleteChallengesCommand(new ArrayList<>(Client.getProfile().getRequestedMatches()), null));
 
-				scheduler.shutdown();
+                scheduler.shutdown();
 
                 loadPage("GameRoomPage");
 
 
-			} else {
+            } else {
 
-			}
-		}
-		else {
+            }
+        } else {
 
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-			alert.setTitle("View Match");
-			alert.setHeaderText("Do you Want to View your match?");
-			alert.setContentText("");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("View Match");
+            alert.setHeaderText("Do you Want to View your match?");
+            alert.setContentText("");
 
-			ButtonType view = new ButtonType("View");
-			ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+            ButtonType view = new ButtonType("View");
+            ButtonType cancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
 
-			alert.getButtonTypes().setAll(view,cancel);
-			Optional<ButtonType> as = alert.showAndWait();
-			if (as.get().equals(view)){
-				Client.getProfile().setActiveMatch(match);
-				scheduler.shutdown();
-				loadPage("GameRoomPage");
-			}
-			else {
+            alert.getButtonTypes().setAll(view, cancel);
+            Optional<ButtonType> as = alert.showAndWait();
+            if (as.get().equals(view)) {
+                Client.getProfile().setActiveMatch(match);
+                scheduler.shutdown();
+                loadPage("GameRoomPage");
+            } else {
 
             }
 
 
+        }
 
-		}
+    }
 
-	}
+    public void createFilter() {
+        loadPage("CreateFilterPage");
+        scheduler.shutdown();
 
-	public void createFilter(){
-		loadPage("CreateFilterPage");
-		scheduler.shutdown();
-
-	}
-
+    }
 
 
-
-	public void setChallenges(List<Match> challenges) {
-		this.challenges = challenges;
-	}
+    public void setChallenges(List<Match> challenges) {
+        this.challenges = challenges;
+    }
 }
