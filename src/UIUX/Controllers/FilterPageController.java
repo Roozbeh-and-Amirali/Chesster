@@ -3,7 +3,7 @@ package UIUX.Controllers;
 import BasicClasses.ChallengeFilter;
 import BasicClasses.Rating;
 import BasicClasses.Time;
-import Game.ClockNiggas.Clock;
+import Game.ClockStuff.Clock;
 import NetworkStuff.ClientSide.Client;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;

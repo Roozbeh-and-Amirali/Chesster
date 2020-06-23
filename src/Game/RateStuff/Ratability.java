@@ -1,4 +1,4 @@
-package Game.RateNiggas;
+package Game.RateStuff;
 
 /*
 Moshakhas mikone ke baaZ-e mored-e nazaremoon rated e ya unrated

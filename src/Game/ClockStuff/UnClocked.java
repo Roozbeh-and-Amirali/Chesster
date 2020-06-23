@@ -1,4 +1,4 @@
-package Game.ClockNiggas;
+package Game.ClockStuff;
 
 public class UnClocked implements  Clockability {
 }

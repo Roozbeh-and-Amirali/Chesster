@@ -2,10 +2,10 @@ package Game;
 
 import ChessGame.Board;
 import Enums.Color;
-import Game.ClockNiggas.Clock;
-import Game.ClockNiggas.Clockability;
-import Game.ClockNiggas.Clocked;
-import Game.RateNiggas.Ratability;
+import Game.ClockStuff.Clock;
+import Game.ClockStuff.Clockability;
+import Game.ClockStuff.Clocked;
+import Game.RateStuff.Ratability;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;

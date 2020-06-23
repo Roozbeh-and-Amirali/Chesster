@@ -1,6 +1,6 @@
 package BasicClasses;
 
-import Game.ClockNiggas.Clock;
+import Game.ClockStuff.Clock;
 import Game.Match;
 
 import java.io.Serializable;

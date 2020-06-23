@@ -1,4 +1,4 @@
-package Game.RateNiggas;
+package Game.RateStuff;
 
 /*
 BaaZmoon rated e vaghT in ro daarim

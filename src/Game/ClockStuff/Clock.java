@@ -1,4 +1,4 @@
-package Game.ClockNiggas;
+package Game.ClockStuff;
 
 import BasicClasses.Time;
 import BasicClasses.Timer;

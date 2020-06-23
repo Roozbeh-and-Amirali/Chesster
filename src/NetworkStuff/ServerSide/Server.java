@@ -97,7 +97,7 @@ public class Server {
 				GameHandler gameHandler=new GameHandler(currentGameSocket);
 				gameHandlers.put( userHandler, gameHandler );
 				ServerLogWriter.getInstance().writeLog("A Client Has Connected");
-				//System.out.println("got all the sockets nigga");
+				//System.out.println("got all the sockets");
 
 
 				new Thread( userHandler ).start();

@@ -3,7 +3,6 @@ package Game;
 
 import BasicClasses.ChallengeFilter;
 import BasicClasses.Rating;
-import Game.ClockNiggas.Clocked;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
